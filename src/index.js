@@ -1,13 +1,51 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import Layout from "./components/layout";
+import reportWebVitals from "./reportWebVitals";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ProtectedRoute from "./components/userManager/protectedRoute";
+import User from "./apps/user";
+import Red from "./apps/red";
+import AuthProvider from "./components/userManager/authProvider";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const router = createBrowserRouter([
+  {
+    path:"/",
+    element: <Layout><Red /></Layout>,
+    children: [
+      {
+        path: "*",
+        element: <>404 - ERROR</>
+      },
+      {
+        path: ":site",
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/user",
+        element: <User />,
+        children: [
+          {
+            path: ":site",
+          },
+        ],
+      },
+    ],
+  },
+]);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+        <RouterProvider router={router}>Hola</RouterProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 
