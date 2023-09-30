@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -32,14 +32,11 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
+  const [name, setName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -57,9 +54,7 @@ export default function SignUp() {
             Regístrate
           </Typography>
           <Box
-            component="form"
             noValidate
-            onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -72,6 +67,10 @@ export default function SignUp() {
                   id="firstName"
                   label="Nombre(s)"
                   autoFocus
+                  value={name}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -82,6 +81,10 @@ export default function SignUp() {
                   label="Apellidos"
                   name="lastName"
                   autoComplete="family-name"
+                  value={lastName}
+                  onChange={(event) => {
+                    setLastName(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -92,6 +95,10 @@ export default function SignUp() {
                   label="Email"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -103,6 +110,10 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
