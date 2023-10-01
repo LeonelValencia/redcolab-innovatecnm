@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import md5 from "md5"
+import md5 from "md5";
 
 function Copyright(props) {
   return (
@@ -32,10 +32,11 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [fakePass, setFakePass] = useState("")
+  const [fakePass, setFakePass] = useState("");
   const [password, setPassword] = useState("");
-  console.log(fakePass);
   const [snackType, setSnackType] = useState({ open: false });
+  const [inputsInvalid, setInputsInvalid] = useState({});
+  const validMail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
 
   const showSnackbar = (severity, message) => {
     setSnackType({ severity: severity, message: message, open: true });
@@ -50,7 +51,17 @@ export default function SignUp() {
 
   async function handleSummit(e) {
     e.preventDefault();
-    const pass = md5(password)
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      showSnackbar("error", "Email no es correcto. ✉️✉️✉️");
+      setInputsInvalid({
+        name: name === "",
+        lastName: lastName === "",
+        password: password === "",
+        email: email === "",
+      });
+      return null;
+    }
+    const pass = md5(password);
     try {
       const API = process.env.REACT_APP_SERVICE_USER + "/signup";
       const response = await fetch(API, {
@@ -71,10 +82,27 @@ export default function SignUp() {
         setLastName("");
         setEmail("");
         setPassword("");
-        setFakePass("")
+        setFakePass("");
+        setInputsInvalid({});
       } else {
-        console.log("response error:", response);
-        showSnackbar("error", "Algo salio mal, intente mas tarde. 😥😥");
+        const data = await response.json();
+        console.log("response error:", data);
+        showSnackbar("error", "Error: " + data.body.error + " 😥😥");
+        switch (data.body.input) {
+          case "email":
+            setInputsInvalid({
+              email: true,
+            });
+            break;
+          default:
+            setInputsInvalid({
+              name: name === "",
+              lastName: lastName === "",
+              password: password === "",
+              email: email === "",
+            });
+            break;
+        }
       }
     } catch (error) {
       console.error("summitError: ", error);
@@ -108,8 +136,13 @@ export default function SignUp() {
                   id="firstName"
                   label="Nombre(s)"
                   autoFocus
+                  error={inputsInvalid?.name}
                   value={name}
                   onChange={(event) => {
+                    setInputsInvalid({
+                      ...inputsInvalid,
+                      name: false,
+                    });
                     setName(event.target.value);
                   }}
                 />
@@ -123,7 +156,12 @@ export default function SignUp() {
                   name="lastName"
                   autoComplete="family-name"
                   value={lastName}
+                  error={inputsInvalid?.lastName}
                   onChange={(event) => {
+                    setInputsInvalid({
+                      ...inputsInvalid,
+                      lastName: false,
+                    });
                     setLastName(event.target.value);
                   }}
                 />
@@ -134,10 +172,15 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   label="Email"
+                  error={inputsInvalid?.email || !validMail}
                   name="email"
                   autoComplete="email"
                   value={email}
                   onChange={(event) => {
+                    setInputsInvalid({
+                      ...inputsInvalid,
+                      email: false,
+                    });
                     setEmail(event.target.value);
                   }}
                 />
@@ -152,11 +195,16 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                   value={fakePass}
+                  error={inputsInvalid?.password}
                   onChange={(event) => {
-                    const value = event.target.value
-                    const newChar = value.charAt(value.length-1)
-                    setPassword(`${password}${newChar}`)
+                    const value = event.target.value;
+                    const newChar = value.charAt(value.length - 1);
+                    setPassword(`${password}${newChar}`);
                     setFakePass(makeFakePass(value.length));
+                    setInputsInvalid({
+                      ...inputsInvalid,
+                      password: false,
+                    });
                   }}
                 />
               </Grid>
@@ -194,7 +242,7 @@ export default function SignUp() {
       {snackType.open && (
         <Snackbar
           open={snackType.open}
-          autoHideDuration={500}
+          autoHideDuration={1000}
           onClose={handleClose}
         >
           <Alert
@@ -214,10 +262,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-
 function makeFakePass(length) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   let counter = 0;
   while (counter < length) {

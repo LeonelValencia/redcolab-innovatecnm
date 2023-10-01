@@ -1,41 +1,198 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { useNavigate } from "react-router-dom";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import md5 from "md5"
 
-export default function Login() {
-  const NAVIGATE = useNavigate()
+function Copyright(props) {
   return (
-      <Drawer anchor={"right"} open={true}>
-        <Box sx={{ width: 400 }} role="presentation">
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={() => {
-                  NAVIGATE("/")
-                }}
-              >
-                <ListItemIcon>
-                  <ArrowBackIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Regresar"} />
-              </ListItemButton>
-            </ListItem>
-          </List>
-          <Divider />
-          
-        </Box>
-      </Drawer>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {`"La tecnología para la colaboración"`}
+      <br />
+      {`Redcolab Copyright ©`}
+      {new Date().getFullYear()}
+      <br />
+    </Typography>
   );
+}
+
+export default function SignUp() {
+
+  const [email, setEmail] = useState("");
+  const [fakePass, setFakePass] = useState("")
+  const [password, setPassword] = useState("");
+  const [snackType, setSnackType] = useState({ open: false });
+
+  const isValidEmail = () =>{
+    return /\S+@\S+\.\S+/.test(email);
+  }
+
+  const showSnackbar = (severity, message) => {
+    setSnackType({ severity: severity, message: message, open: true });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackType({ open: false });
+  };
+
+  async function handleSummit(e) {
+    e.preventDefault();
+    const pass = md5(password)
+    try {
+      const API = process.env.REACT_APP_SERVICE_USER + "/login";
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password: pass,
+        }),
+      });
+      if (response.ok) {
+        showSnackbar("success", "Bienvenido. 🥳🥳🥳");
+        setEmail("");
+        setPassword("");
+        setFakePass("")
+      } else {
+        console.log("response error:", response);
+        showSnackbar("error", "Algo salio mal, intente mas tarde. 😥😥");
+      }
+    } catch (error) {
+      console.error("summitError: ", error);
+      showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
+    }
+  }
+
+  return (
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            ¡Bienvenido!
+          </Typography>
+          <Box noValidate sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  error={isValidEmail()}
+                  name="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Contraseña"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  value={fakePass}
+                  onChange={(event) => {
+                    const value = event.target.value
+                    const newChar = value.charAt(value.length-1)
+                    setPassword(`${password}${newChar}`)
+                    setFakePass(makeFakePass(value.length));
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
+                >
+                  Revisa nuestros{" "}
+                  <Link>Términos y Condiciones</Link>
+                </Typography>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleSummit}
+            >
+              Continuar
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/signUp" variant="body2">
+                  ¿Deseas registrarte? ¡Crea una cuenta¡
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+      {snackType.open && (
+        <Snackbar
+          open={snackType.open}
+          autoHideDuration={1000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={snackType.severity}
+            sx={{ width: "100%" }}
+          >
+            {snackType.message}
+          </Alert>
+        </Snackbar>
+      )}
+    </>
+  );
+}
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
+function makeFakePass(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
 }
