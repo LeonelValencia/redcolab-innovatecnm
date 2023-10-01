@@ -19,7 +19,7 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {`"La tecnología para la colaboración"`}
+      {`"Tecnología para la colaboración"`}
       <br />
       {`Redcolab Copyright ©`}
       {new Date().getFullYear()}
@@ -31,7 +31,6 @@ function Copyright(props) {
 export default function SignUp() {
 
   const [email, setEmail] = useState("");
-  const [fakePass, setFakePass] = useState("")
   const [password, setPassword] = useState("");
   const [snackType, setSnackType] = useState({ open: false });
   const [code, setCode] = useState(0)
@@ -68,7 +67,6 @@ export default function SignUp() {
         showSnackbar("success", "Bienvenido. 🥳🥳🥳");
         setEmail("");
         setPassword("");
-        setFakePass("")
       } else {
         const data = await response.json()
         console.log("response error:", data.body.error);
@@ -123,13 +121,11 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  value={fakePass}
+                  value={password}
                   error={code === 102}
                   onChange={(event) => {
                     const value = event.target.value
-                    const newChar = value.charAt(value.length-1)
-                    setPassword(`${password}${newChar}`)
-                    setFakePass(makeFakePass(value.length));
+                    setPassword(value)
                     setCode(0)
                   }}
                 />

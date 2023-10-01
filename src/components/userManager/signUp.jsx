@@ -19,7 +19,7 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {`"La tecnología para la colaboración"`}
+      {`"Tecnología para la colaboración"`}
       <br />
       {`Redcolab Copyright ©`}
       {new Date().getFullYear()}
@@ -32,8 +32,10 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [fakePass, setFakePass] = useState("");
+  //const [fakePass, setFakePass] = useState("");
   const [password, setPassword] = useState("");
+  //const [fakePass2, setFakePass2] = useState("");
+  const [password2, setPassword2] = useState("");
   const [snackType, setSnackType] = useState({ open: false });
   const [inputsInvalid, setInputsInvalid] = useState({});
   const validMail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
@@ -51,6 +53,13 @@ export default function SignUp() {
 
   async function handleSummit(e) {
     e.preventDefault();
+    if (password !== password2) {
+      showSnackbar("error", "Las contraseñas no son iguales");
+      setInputsInvalid({
+        password: true,
+      });
+      return null;
+    }
     if (!/\S+@\S+\.\S+/.test(email)) {
       showSnackbar("error", "Email no es correcto. ✉️✉️✉️");
       setInputsInvalid({
@@ -82,7 +91,8 @@ export default function SignUp() {
         setLastName("");
         setEmail("");
         setPassword("");
-        setFakePass("");
+        setPassword2("");
+
         setInputsInvalid({});
       } else {
         const data = await response.json();
@@ -194,13 +204,32 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  value={fakePass}
+                  value={password}
                   error={inputsInvalid?.password}
                   onChange={(event) => {
                     const value = event.target.value;
-                    const newChar = value.charAt(value.length - 1);
-                    setPassword(`${password}${newChar}`);
-                    setFakePass(makeFakePass(value.length));
+                    setPassword(value);
+                    setInputsInvalid({
+                      ...inputsInvalid,
+                      password: false,
+                    });
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Confirme Contraseña"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  value={password2}
+                  error={inputsInvalid?.password}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    setPassword2(value);
                     setInputsInvalid({
                       ...inputsInvalid,
                       password: false,
