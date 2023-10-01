@@ -33,7 +33,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [snackType, setSnackType] = useState({ open: false });
-  const [code, setCode] = useState(0)
+  const [isError, setIsError] = useState(false)
 
   const isValidEmail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
 
@@ -65,13 +65,15 @@ export default function SignUp() {
       });
       if (response.ok) {
         showSnackbar("success", "Bienvenido. 🥳🥳🥳");
-        setEmail("");
-        setPassword("");
+        //setEmail("");
+        //setPassword("");
+        const data = await response.json()
+        console.log("response error:", data);
       } else {
         const data = await response.json()
-        console.log("response error:", data.body.error);
+        console.error(data);
         showSnackbar("error", "Error "+data.body.error+". 😥😥");
-        setCode(data.body.code)
+        setIsError(true)
       }
     } catch (error) {
       console.error("summitError: ", error);
@@ -102,12 +104,12 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   label="Email"
-                  error={!isValidEmail || code === 101}
+                  error={!isValidEmail || isError}
                   name="email"
                   autoComplete="email"
                   value={email}
                   onChange={(event) => {
-                    setCode(0)
+                    setIsError(false)
                     setEmail(event.target.value);
                   }}
                 />
@@ -122,11 +124,11 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                   value={password}
-                  error={code === 102}
+                  error={isError}
                   onChange={(event) => {
                     const value = event.target.value
                     setPassword(value)
-                    setCode(0)
+                    setIsError(false)
                   }}
                 />
               </Grid>
