@@ -10,6 +10,9 @@ import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import md5 from "md5"
+import { useUserContext } from './authProvider'
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 function Copyright(props) {
   return (
@@ -36,7 +39,8 @@ export default function SignUp() {
   const [isError, setIsError] = useState(false)
 
   const isValidEmail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
-
+  const navigate = useNavigate()
+  const USER = useUserContext()
   const showSnackbar = (severity, message) => {
     setSnackType({ severity: severity, message: message, open: true });
   };
@@ -65,10 +69,18 @@ export default function SignUp() {
       });
       if (response.ok) {
         showSnackbar("success", "Bienvenido. 🥳🥳🥳");
-        //setEmail("");
-        //setPassword("");
+        setEmail("");
+        setPassword("");
         const data = await response.json()
-        console.log("response error:", data);
+        if(data.body.token && data.body.refreshToken){
+          USER.saveUser(data)
+          navigate("/user")
+        }else{
+          console.error(data);
+          showSnackbar("error", "generate token 😥😥");
+          setIsError(true)
+        }
+        //console.log("response login", data);
       } else {
         const data = await response.json()
         console.error(data);
@@ -83,6 +95,7 @@ export default function SignUp() {
 
   return (
     <>
+    {USER.isAuth && (<Navigate to="/" />)}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -186,7 +199,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-
+/*
 function makeFakePass(length) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -198,3 +211,4 @@ function makeFakePass(length) {
   }
   return result;
 }
+*/

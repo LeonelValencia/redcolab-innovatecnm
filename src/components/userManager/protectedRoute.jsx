@@ -6,5 +6,9 @@ import Layout from '../layout'
 
 export default function ProtectedRoute() {
   const USER = useUserContext()
+  if(USER.getRefreshToken() && !USER.isAuth){
+    USER.checkAuth()
+    return <Layout >loading</Layout>
+  }
   return USER.isAuth ? <Layout ><Outlet /></Layout> : <Navigate to="/login" />
 }
