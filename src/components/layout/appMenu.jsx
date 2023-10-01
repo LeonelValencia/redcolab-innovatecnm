@@ -14,16 +14,35 @@ import MenuItem from "@mui/material/MenuItem";
 import { IconColabConnect } from "../icons";
 import { useUserContext } from "../userManager/authProvider";
 import { useNavigate } from "react-router-dom";
+import Divider from "@mui/material/Divider";
+
 
 
 const pages = ["red", "proyectos", "roadMaps"];
-const USER_SETTINGS = ["perfil", "cerrar sesion"];
+const USER_SETTINGS = [
+  {
+    label: "Perfil",
+    link: "/user"
+  },
+  {
+    label: "Mis Proyectos",
+    link: "/myProjects"
+  },
+  {
+    label: "Mis RoadMaps",
+    link: "/myRoadMap"
+  },
+  {
+    label: "Mi Red",
+    link: "/userNet"
+  },
+];
 
 export default function AppMenu() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const USER = useUserContext();
-  const NAVIGATE = useNavigate();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -152,17 +171,29 @@ export default function AppMenu() {
                 onClose={handleCloseUserMenu}
               >
                 {USER_SETTINGS.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                  <MenuItem key={setting.label} onClick={()=>{
+                    handleCloseUserMenu();
+                    navigate(setting.link)
+                  }}>
+                    <Typography textAlign="center">{setting.label}</Typography>
                   </MenuItem>
                 ))}
+                <Divider />
+                <MenuItem onClick={()=>{
+                    handleCloseUserMenu();
+                    USER.signOut().then(()=>{
+                      navigate("/login")
+                    })
+                  }}>
+                    <Typography textAlign="center">Cerrar Sesión</Typography>
+                  </MenuItem>
               </Menu>
             </Box>
           ) : (
             <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
               <Tooltip title="Login">
                 <Button
-                  onClick={()=>{NAVIGATE("/login")}}
+                  onClick={()=>{navigate("/login")}}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   Inicia Sesión
@@ -170,7 +201,7 @@ export default function AppMenu() {
               </Tooltip>
               <Tooltip title="sign up!">
                 <Button
-                  onClick={()=>{NAVIGATE("/signUp")}}
+                  onClick={()=>{navigate("/signUp")}}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   Regístrate!

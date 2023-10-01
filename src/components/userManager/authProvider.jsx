@@ -6,7 +6,8 @@ const USER_CONTEXT = createContext({
   saveUser: (userData) => {},
   getRefreshToken: () => {},
   getUser: () => {},
-  checkAuth: async ()=>{},
+  checkAuth: async () => {},
+  signOut: async () => {},
 });
 
 export default function AuthProvider({ children }) {
@@ -15,9 +16,8 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    checkAuth()
-  })
-  
+    checkAuth();
+  });
 
   async function requestNewToken(refreshToken) {
     //console.log("refToken",refreshToken);
@@ -74,9 +74,7 @@ export default function AuthProvider({ children }) {
   }
 
   async function checkAuth() {
-    if (token) {
-      //auth user
-    } else {
+    if (!token) {
       const refToken = getRefreshToken();
       if (refToken) {
         const newToken = await requestNewToken(refToken);
@@ -85,6 +83,11 @@ export default function AuthProvider({ children }) {
           if (userInfo) {
             saveSessionInfo(userInfo, newToken, refToken);
           }
+        } else {
+          setAuth(false);
+          setToken("");
+          setUser(undefined);
+          localStorage.removeItem("token");
         }
       }
     }
@@ -122,6 +125,32 @@ export default function AuthProvider({ children }) {
     );
   };
 
+  async function signOut() {
+    const refToken = getRefreshToken();
+    if (refToken) {
+      try {
+        const API = process.env.REACT_APP_SERVICE_USER + "/signOut";
+        const response = await fetch(API, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${refToken}`,
+          },
+        });
+        if (response.ok) {
+          setAuth(false);
+          setToken("");
+          setUser(undefined);
+          localStorage.removeItem("token");
+          return true;
+        }
+      } catch (error) {
+        console.error("sign out error: ", error);
+      }
+    }
+    return false;
+  }
+
   return (
     <USER_CONTEXT.Provider
       value={{
@@ -130,7 +159,8 @@ export default function AuthProvider({ children }) {
         getToken: getToken,
         getRefreshToken: getRefreshToken,
         getUser: getUser,
-        checkAuth: checkAuth
+        checkAuth: checkAuth,
+        signOut: signOut,
       }}
     >
       {children}
