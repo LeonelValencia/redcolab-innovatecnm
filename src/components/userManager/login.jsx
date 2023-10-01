@@ -34,10 +34,9 @@ export default function SignUp() {
   const [fakePass, setFakePass] = useState("")
   const [password, setPassword] = useState("");
   const [snackType, setSnackType] = useState({ open: false });
+  const [code, setCode] = useState(0)
 
-  const isValidEmail = () =>{
-    return /\S+@\S+\.\S+/.test(email);
-  }
+  const isValidEmail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
 
   const showSnackbar = (severity, message) => {
     setSnackType({ severity: severity, message: message, open: true });
@@ -71,8 +70,10 @@ export default function SignUp() {
         setPassword("");
         setFakePass("")
       } else {
-        console.log("response error:", response);
-        showSnackbar("error", "Algo salio mal, intente mas tarde. 😥😥");
+        const data = await response.json()
+        console.log("response error:", data.body.error);
+        showSnackbar("error", "Error "+data.body.error+". 😥😥");
+        setCode(data.body.code)
       }
     } catch (error) {
       console.error("summitError: ", error);
@@ -103,11 +104,12 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   label="Email"
-                  error={isValidEmail()}
+                  error={!isValidEmail || code === 101}
                   name="email"
                   autoComplete="email"
                   value={email}
                   onChange={(event) => {
+                    setCode(0)
                     setEmail(event.target.value);
                   }}
                 />
@@ -122,11 +124,13 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                   value={fakePass}
+                  error={code === 102}
                   onChange={(event) => {
                     const value = event.target.value
                     const newChar = value.charAt(value.length-1)
                     setPassword(`${password}${newChar}`)
                     setFakePass(makeFakePass(value.length));
+                    setCode(0)
                   }}
                 />
               </Grid>
@@ -164,7 +168,7 @@ export default function SignUp() {
       {snackType.open && (
         <Snackbar
           open={snackType.open}
-          autoHideDuration={1000}
+          autoHideDuration={2000}
           onClose={handleClose}
         >
           <Alert
