@@ -1,0 +1,32 @@
+{
+    "cienciasNaturales":{
+        "label": "Ciencias Naturales",
+        "color": "#72CC5B",
+        "colors": ["#5D7F55", "#72CC5B", "#8FFF72", "#D7FFCD", "#478039"]
+    },
+    "cienciasSociales":{
+        "label": "Ciencias Sociales",
+        "color": "#733B36",
+        "colors": ["#BF8578","#733B36","#260A03","#A69B7C","#A6263E"]
+    },
+    "culturaSociedad":{
+        "label": "Cultura y Sociedad",
+        "color": "#F2D649",
+        "colors": ["#F2D649","#079DD9","#77BF56","#F2620F","#D92525"]
+    },
+    "tecnologia":{
+        "label": "Tecnologia",
+        "color": "#1B2D5E",
+        "colors": ["#3156A6","#1B2D5E","#304E96","#1E3368","#74BFF7"]
+    },
+    "salud":{
+        "label": "Salud",
+        "color": "#ACD1F2",
+        "colors": ["#ACD1F2","#03A65A","#038C5A","#023059","#416BBF"]
+    },
+    "interest-test": {
+        "label": "Topic Test",
+        "color": "#B679F2",
+        "colors": ["#F2D8CE","#B679F2","#8430D9","#9B63BF","#592A49"]
+    }
+}
