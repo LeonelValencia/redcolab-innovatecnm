@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -10,6 +10,12 @@ import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import md5 from "md5";
+import {
+  useNewUserService,
+  userSchema,
+  useValidateEmail,
+} from "../webServices/user";
+import DataVerifier from "../webServices/tools";
 
 function Copyright(props) {
   return (
@@ -38,6 +44,9 @@ export default function SignUp() {
   const [password2, setPassword2] = useState("");
   const [snackType, setSnackType] = useState({ open: false });
   const [inputsInvalid, setInputsInvalid] = useState({});
+  const [validateEmail, { loading: validateLoad }] = useValidateEmail();
+  const [insertNewUser, { loading: insertLoad }] = useNewUserService();
+
   const validMail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
 
   const showSnackbar = (severity, message) => {
@@ -72,52 +81,65 @@ export default function SignUp() {
     }
     const pass = md5(password);
     try {
-      const API = process.env.REACT_APP_SERVICE_USER + "/signup";
-      const response = await fetch(API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      validateEmail({
+        email: email,
+        onCompleted: (data = {}) => {
+          if (data.hasOwnProperty("user")) {
+            if (!DataVerifier.isValidArray(data.user)) {
+              console.log("se inserta");
+              let newUser = { ...userSchema };
+              newUser.contact.email = email;
+              newUser.personal.name = name;
+              newUser.personal.lastName = lastName;
+              newUser.password = pass;
+              try {
+                insertNewUser({
+                  user: newUser,
+                  onCompleted: (data) => {
+                    console.log(data);
+                    showSnackbar(
+                      "success",
+                      "Usuario Registrado con éxito. 🥳🥳🥳"
+                    );
+                    setName("");
+                    setLastName("");
+                    setEmail("");
+                    setPassword("");
+                    setPassword2("");
+                  },
+                  onError: (error) => {
+                    console.error("insert new user query error: ", error);
+                    showSnackbar(
+                      "error",
+                      "Tenemos un problema interno. 💥💥💥"
+                    );
+                  },
+                });
+              } catch (error) {
+                console.error("mutation error: ", error);
+                    showSnackbar(
+                      "error",
+                      "Tenemos un problema interno. 💥💥💥"
+                    );
+              }
+              setInputsInvalid({});
+            } else {
+              showSnackbar("error", "El email ya esta registrado 😥😥");
+              setInputsInvalid({
+                email: true,
+              });
+            }
+          } else {
+            console.error("internal validation data.user");
+            showSnackbar("error", "Error interno, inténtelo mas tarde 😥😥");
+          }
         },
-        body: JSON.stringify({
-          name,
-          lastName,
-          email,
-          password: pass,
-        }),
+        onError: (error) => {
+          console.error("validate email query error: ", error);
+          showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
+        },
       });
-      if (response.ok) {
-        showSnackbar("success", "Usuario Registrado con éxito. 🥳🥳🥳");
-        setName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        setPassword2("");
-
-        setInputsInvalid({});
-      } else {
-        const data = await response.json();
-        console.log("response error:", data);
-        showSnackbar("error", "Error: " + data.body.error + " 😥😥");
-        switch (data.body.input) {
-          case "email":
-            setInputsInvalid({
-              email: true,
-            });
-            break;
-          default:
-            setInputsInvalid({
-              name: name === "",
-              lastName: lastName === "",
-              password: password === "",
-              email: email === "",
-            });
-            break;
-        }
-      }
-    } catch (error) {
-      console.error("summitError: ", error);
-      showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
-    }
+    } catch (error) {}
   }
 
   return (
@@ -248,15 +270,15 @@ export default function SignUp() {
                 </Typography>
               </Grid>
             </Grid>
-            <Button
-              type="submit"
+            <LoadingButton
+              loading={validateLoad || insertLoad}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleSummit}
             >
               Continuar
-            </Button>
+            </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
@@ -291,6 +313,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+/*
 function makeFakePass(length) {
   let result = "";
   const characters =
@@ -303,3 +326,52 @@ function makeFakePass(length) {
   }
   return result;
 }
+
+
+const API = process.env.REACT_APP_SERVICE_USER + "/signup";
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          lastName,
+          email,
+          password: pass,
+        }),
+      });
+      if (response.ok) {
+        showSnackbar("success", "Usuario Registrado con éxito. 🥳🥳🥳");
+        setName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setPassword2("");
+
+        setInputsInvalid({});
+      } else {
+        const data = await response.json();
+        console.log("response error:", data);
+        showSnackbar("error", "Error: " + data.body.error + " 😥😥");
+        switch (data.body.input) {
+          case "email":
+            setInputsInvalid({
+              email: true,
+            });
+            break;
+          default:
+            setInputsInvalid({
+              name: name === "",
+              lastName: lastName === "",
+              password: password === "",
+              email: email === "",
+            });
+            break;
+        }
+      }
+    } catch (error) {
+      console.error("summitError: ", error);
+      showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
+    }
+*/
