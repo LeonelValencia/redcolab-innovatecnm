@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -14,8 +15,8 @@ import {
   useNewUserService,
   userSchema,
   useValidateEmail,
-} from "../webServices/user";
-import DataVerifier from "../webServices/tools";
+} from "../../webServices/user";
+import DataVerifier from "../../webServices/tools";
 
 function Copyright(props) {
   return (
@@ -46,6 +47,7 @@ export default function SignUp() {
   const [inputsInvalid, setInputsInvalid] = useState({});
   const [validateEmail, { loading: validateLoad }] = useValidateEmail();
   const [insertNewUser, { loading: insertLoad }] = useNewUserService();
+  const navigate = useNavigate()
 
   const validMail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
 
@@ -106,6 +108,7 @@ export default function SignUp() {
                     setEmail("");
                     setPassword("");
                     setPassword2("");
+                    navigate("/testNewUser/")
                   },
                   onError: (error) => {
                     console.error("insert new user query error: ", error);

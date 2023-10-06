@@ -16,48 +16,42 @@ import { useUserContext } from "../userManager/authProvider";
 import { useNavigate } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 
-
-
 const pages = ["red", "proyectos", "roadMaps"];
 const USER_SETTINGS = [
   {
     label: "Perfil",
-    link: "/user"
+    link: "/user",
   },
   {
     label: "Mis Proyectos",
-    link: "/myProjects"
+    link: "/myProjects",
   },
   {
     label: "Mis RoadMaps",
-    link: "/myRoadMap"
+    link: "/myRoadMap",
   },
   {
     label: "Mi Red",
-    link: "/userNet"
+    link: "/userNet",
   },
 ];
 
 export default function AppMenu() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  
   const USER = useUserContext();
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -136,6 +130,21 @@ export default function AppMenu() {
           >
             REDCOLAB
           </Typography>
+          {USER.isAuth ? (
+            <UserMenu USER={USER} navigate={navigate} />
+          ) : (
+            <Tooltip title="sign up!">
+              <Button
+                onClick={() => {
+                  navigate("/signUp");
+                }}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Regístrate!
+              </Button>
+            </Tooltip>
+          )}
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
@@ -148,63 +157,17 @@ export default function AppMenu() {
             ))}
           </Box>
           {USER.isAuth ? (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {USER_SETTINGS.map((setting) => (
-                  <MenuItem key={setting.label} onClick={()=>{
-                    handleCloseUserMenu();
-                    navigate(setting.link)
-                  }}>
-                    <Typography textAlign="center">{setting.label}</Typography>
-                  </MenuItem>
-                ))}
-                <Divider />
-                <MenuItem onClick={()=>{
-                    handleCloseUserMenu();
-                    USER.signOut().then(()=>{
-                      navigate("/login")
-                    })
-                  }}>
-                    <Typography textAlign="center">Cerrar Sesión</Typography>
-                  </MenuItem>
-              </Menu>
-            </Box>
+            <UserMenu USER={USER} navigate={navigate} />
           ) : (
             <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
               <Tooltip title="Login">
                 <Button
-                  onClick={()=>{navigate("/login")}}
+                  onClick={() => {
+                    navigate("/login");
+                  }}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   Inicia Sesión
-                </Button>
-              </Tooltip>
-              <Tooltip title="sign up!">
-                <Button
-                  onClick={()=>{navigate("/signUp")}}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  Regístrate!
                 </Button>
               </Tooltip>
             </Box>
@@ -212,5 +175,63 @@ export default function AppMenu() {
         </Toolbar>
       </Container>
     </AppBar>
+  );
+}
+
+function UserMenu({ USER, navigate }) {
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  return (
+    <Box sx={{ flexGrow: 0 }}>
+      <Tooltip title="Open settings">
+        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+        </IconButton>
+      </Tooltip>
+      <Menu
+        sx={{ mt: "45px" }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={handleCloseUserMenu}
+      >
+        {USER_SETTINGS.map((setting) => (
+          <MenuItem
+            key={setting.label}
+            onClick={() => {
+              handleCloseUserMenu();
+              navigate(setting.link);
+            }}
+          >
+            <Typography textAlign="center">{setting.label}</Typography>
+          </MenuItem>
+        ))}
+        <Divider />
+        <MenuItem
+          onClick={() => {
+            handleCloseUserMenu();
+            USER.signOut().then(() => {
+              navigate("/login");
+            });
+          }}
+        >
+          <Typography textAlign="center">Cerrar Sesión</Typography>
+        </MenuItem>
+      </Menu>
+    </Box>
   );
 }

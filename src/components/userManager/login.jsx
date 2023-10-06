@@ -52,46 +52,11 @@ export default function SignUp() {
     setSnackType({ open: false });
   };
 
-  async function handleSummit(e) {
+  function handleSummit(e) {
     e.preventDefault();
-    const pass = md5(password)
-    try {
-      const API = process.env.REACT_APP_SERVICE_USER + "/login";
-      const response = await fetch(API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password: pass,
-        }),
-      });
-      if (response.ok) {
-        showSnackbar("success", "Bienvenido. 🥳🥳🥳");
-        setEmail("");
-        setPassword("");
-        const data = await response.json()
-        if(data.body.token && data.body.refreshToken){
-          USER.saveUser(data)
-          navigate("/user")
-        }else{
-          console.error(data);
-          showSnackbar("error", "generate token 😥😥");
-          setIsError(true)
-        }
-        //console.log("response login", data);
-      } else {
-        const data = await response.json()
-        console.error(data);
-        showSnackbar("error", "Error "+data.body.error+". 😥😥");
-        setIsError(true)
-      }
-    } catch (error) {
-      console.error("summitError: ", error);
-      showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
-    }
   }
+
+  
 
   return (
     <>
@@ -211,4 +176,46 @@ function makeFakePass(length) {
   }
   return result;
 }
+
+
+async function handleSummit(e) {
+    e.preventDefault();
+    const pass = md5(password)
+    try {
+      const API = process.env.REACT_APP_SERVICE_USER + "/login";
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password: pass,
+        }),
+      });
+      if (response.ok) {
+        showSnackbar("success", "Bienvenido. 🥳🥳🥳");
+        setEmail("");
+        setPassword("");
+        const data = await response.json()
+        if(data.body.token && data.body.refreshToken){
+          USER.saveUser(data)
+          navigate("/user")
+        }else{
+          console.error(data);
+          showSnackbar("error", "generate token 😥😥");
+          setIsError(true)
+        }
+        //console.log("response login", data);
+      } else {
+        const data = await response.json()
+        console.error(data);
+        showSnackbar("error", "Error "+data.body.error+". 😥😥");
+        setIsError(true)
+      }
+    } catch (error) {
+      console.error("summitError: ", error);
+      showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
+    }
+  }
 */

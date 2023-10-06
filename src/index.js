@@ -11,18 +11,27 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./components/userManager/protectedRoute";
 import User from "./apps/user";
 import Red from "./apps/red";
-import Interest from "./apps/testForm/interest";
 import { ApolloProvider } from "@apollo/client";
 import client from "./components/webServices";
 //import AuthProvider from "./components/userManager/authProvider";
+import TestNewUser from "./apps/testForm";
 import Super from "./apps/super";
 
-const router = createBrowserRouter([
-
-  {
-    path: "/interest",
-    element: <Interest />
+/*
+{
+    path: "/testNewUser",
+    element: <TestNewUser />,
+    children: [
+      {
+        path: "id"
+      }
+    ]
   },
+  
+*/
+
+const router = createBrowserRouter([
+  
   {
     path: "/",
     element: (
