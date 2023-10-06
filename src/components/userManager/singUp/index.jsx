@@ -1,22 +1,92 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import LoadingButton from "@mui/lab/LoadingButton";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import React, { useReducer, useState } from "react";
+import { useTheme } from "@mui/material/styles";
+import MobileStepper from "@mui/material/MobileStepper";
+import Button from "@mui/material/Button";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { userSchema } from "../../webServices/user";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import md5 from "md5";
-import {
-  useNewUserService,
-  userSchema,
-  useValidateEmail,
-} from "../../webServices/user";
-import DataVerifier from "../../webServices/tools";
+import UserInfo from "./userInfo";
+
+const initForm = { ...userSchema };
+
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setUserData":
+      return { ...state, contact: action.contact, personal: action.personal };
+    case "setInterest":
+      return { ...state, interest: action.interest };
+    case "setSoftSkills":
+      return { ...state, skills: { ...state.skills, soft: action.soft } };
+    case "setCollaborationSkills":
+      return {
+        ...state,
+        skills: { ...state.skills, collaboration: action.collaboration },
+      };
+    case "setTechnicalSkills":
+      return {
+        ...state,
+        skills: { ...state.skills, technical: action.technical },
+      };
+    default:
+      return state;
+  }
+};
+
+export default function SingUp() {
+  const theme = useTheme();
+  const [formState, dispatch] = useReducer(reducer, initForm);
+  const [activeStep, setActiveStep] = useState(0);
+  const [enableStep, setEnableStep] = useState(false);
+
+  const steps = [
+    <UserInfo formState={formState} dispatch={dispatch} setEnableStep={setEnableStep} />,
+    "Create an ad group",
+    "Create an ad",
+  ];
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  return (
+    <div>
+      {steps[activeStep]}
+      <Copyright sx={{ mt: 5 }} />
+      <MobileStepper
+        steps={5}
+        position="bottom"
+        activeStep={activeStep}
+        sx={{ width: "100%", flexGrow: 1 }}
+        nextButton={
+          <Button size="small" onClick={handleNext} disabled={!enableStep}>
+            Next
+            {theme.direction === "rtl" ? (
+              <KeyboardArrowLeft />
+            ) : (
+              <KeyboardArrowRight />
+            )}
+          </Button>
+        }
+        backButton={
+          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === "rtl" ? (
+              <KeyboardArrowRight />
+            ) : (
+              <KeyboardArrowLeft />
+            )}
+            Back
+          </Button>
+        }
+      />
+    </div>
+  );
+}
 
 function Copyright(props) {
   return (
@@ -35,286 +105,87 @@ function Copyright(props) {
   );
 }
 
-export default function SignUp() {
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  //const [fakePass, setFakePass] = useState("");
-  const [password, setPassword] = useState("");
-  //const [fakePass2, setFakePass2] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [snackType, setSnackType] = useState({ open: false });
-  const [inputsInvalid, setInputsInvalid] = useState({});
-  const [validateEmail, { loading: validateLoad }] = useValidateEmail();
-  const [insertNewUser, { loading: insertLoad }] = useNewUserService();
-  const navigate = useNavigate()
-
-  const validMail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
-
-  const showSnackbar = (severity, message) => {
-    setSnackType({ severity: severity, message: message, open: true });
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackType({ open: false });
-  };
-
-  async function handleSummit(e) {
-    e.preventDefault();
-    if (password !== password2) {
-      showSnackbar("error", "Las contraseñas no son iguales");
-      setInputsInvalid({
-        password: true,
-      });
-      return null;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      showSnackbar("error", "Email no es correcto. ✉️✉️✉️");
-      setInputsInvalid({
-        name: name === "",
-        lastName: lastName === "",
-        password: password === "",
-        email: email === "",
-      });
-      return null;
-    }
-    const pass = md5(password);
-    try {
-      validateEmail({
-        email: email,
-        onCompleted: (data = {}) => {
-          if (data.hasOwnProperty("user")) {
-            if (!DataVerifier.isValidArray(data.user)) {
-              console.log("se inserta");
-              let newUser = { ...userSchema };
-              newUser.contact.email = email;
-              newUser.personal.name = name;
-              newUser.personal.lastName = lastName;
-              newUser.password = pass;
-              try {
-                insertNewUser({
-                  user: newUser,
-                  onCompleted: (data) => {
-                    console.log(data);
-                    showSnackbar(
-                      "success",
-                      "Usuario Registrado con éxito. 🥳🥳🥳"
-                    );
-                    setName("");
-                    setLastName("");
-                    setEmail("");
-                    setPassword("");
-                    setPassword2("");
-                    navigate("/testNewUser/")
-                  },
-                  onError: (error) => {
-                    console.error("insert new user query error: ", error);
-                    showSnackbar(
-                      "error",
-                      "Tenemos un problema interno. 💥💥💥"
-                    );
-                  },
+/*
+async function handleSummit(e) {
+      e.preventDefault();
+      if (password !== password2) {
+        showSnackbar("error", "Las contraseñas no son iguales");
+        setInputsInvalid({
+          password: true,
+        });
+        return null;
+      }
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        showSnackbar("error", "Email no es correcto. ✉️✉️✉️");
+        setInputsInvalid({
+          name: name === "",
+          lastName: lastName === "",
+          password: password === "",
+          email: email === "",
+        });
+        return null;
+      }
+      const pass = md5(password);
+      try {
+        validateEmail({
+          email: email,
+          onCompleted: (data = {}) => {
+            if (data.hasOwnProperty("user")) {
+              if (!DataVerifier.isValidArray(data.user)) {
+                console.log("se inserta");
+                let newUser = { ...userSchema };
+                newUser.contact.email = email;
+                newUser.personal.name = name;
+                newUser.personal.lastName = lastName;
+                newUser.password = pass;
+                try {
+                  insertNewUser({
+                    user: newUser,
+                    onCompleted: (data) => {
+                      console.log(data);
+                      showSnackbar(
+                        "success",
+                        "Usuario Registrado con éxito. 🥳🥳🥳"
+                      );
+                      setName("");
+                      setLastName("");
+                      setEmail("");
+                      setPassword("");
+                      setPassword2("");
+                      navigate("/testNewUser/");
+                    },
+                    onError: (error) => {
+                      console.error("insert new user query error: ", error);
+                      showSnackbar(
+                        "error",
+                        "Tenemos un problema interno. 💥💥💥"
+                      );
+                    },
+                  });
+                } catch (error) {
+                  console.error("mutation error: ", error);
+                  showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
+                }
+                setInputsInvalid({});
+              } else {
+                showSnackbar("error", "El email ya esta registrado 😥😥");
+                setInputsInvalid({
+                  email: true,
                 });
-              } catch (error) {
-                console.error("mutation error: ", error);
-                    showSnackbar(
-                      "error",
-                      "Tenemos un problema interno. 💥💥💥"
-                    );
               }
-              setInputsInvalid({});
             } else {
-              showSnackbar("error", "El email ya esta registrado 😥😥");
-              setInputsInvalid({
-                email: true,
-              });
+              console.error("internal validation data.user");
+              showSnackbar("error", "Error interno, inténtelo mas tarde 😥😥");
             }
-          } else {
-            console.error("internal validation data.user");
-            showSnackbar("error", "Error interno, inténtelo mas tarde 😥😥");
-          }
-        },
-        onError: (error) => {
-          console.error("validate email query error: ", error);
-          showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
-        },
-      });
-    } catch (error) {}
-  }
-
-  return (
-    <>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Regístrate
-          </Typography>
-          <Box noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="Nombre(s)"
-                  autoFocus
-                  error={inputsInvalid?.name}
-                  value={name}
-                  onChange={(event) => {
-                    setInputsInvalid({
-                      ...inputsInvalid,
-                      name: false,
-                    });
-                    setName(event.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Apellidos"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={lastName}
-                  error={inputsInvalid?.lastName}
-                  onChange={(event) => {
-                    setInputsInvalid({
-                      ...inputsInvalid,
-                      lastName: false,
-                    });
-                    setLastName(event.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  error={inputsInvalid?.email || !validMail}
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(event) => {
-                    setInputsInvalid({
-                      ...inputsInvalid,
-                      email: false,
-                    });
-                    setEmail(event.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Contraseña"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={password}
-                  error={inputsInvalid?.password}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    setPassword(value);
-                    setInputsInvalid({
-                      ...inputsInvalid,
-                      password: false,
-                    });
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Confirme Contraseña"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={password2}
-                  error={inputsInvalid?.password}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    setPassword2(value);
-                    setInputsInvalid({
-                      ...inputsInvalid,
-                      password: false,
-                    });
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  align="center"
-                >
-                  Al crear una cuenta estas aceptando nuestros{" "}
-                  <Link>Términos y Condiciones</Link>
-                </Typography>
-              </Grid>
-            </Grid>
-            <LoadingButton
-              loading={validateLoad || insertLoad}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSummit}
-            >
-              Continuar
-            </LoadingButton>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  ¿Ya tienes cuenta? Inicia Sesión
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-      {snackType.open && (
-        <Snackbar
-          open={snackType.open}
-          autoHideDuration={1000}
-          onClose={handleClose}
-        >
-          <Alert
-            onClose={handleClose}
-            severity={snackType.severity}
-            sx={{ width: "100%" }}
-          >
-            {snackType.message}
-          </Alert>
-        </Snackbar>
-      )}
-    </>
-  );
-}
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+          },
+          onError: (error) => {
+            console.error("validate email query error: ", error);
+            showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
+          },
+        });
+      } catch (error) {}
+    }
+*/
 
 /*
 function makeFakePass(length) {

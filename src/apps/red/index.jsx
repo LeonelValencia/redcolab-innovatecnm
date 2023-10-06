@@ -1,24 +1,16 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import Login from '../../components/userManager/login'
+//import Login from '../../components/userManager/login'
 import SingUp from '../../components/userManager/singUp'
-import Draw from '../../components/userManager/drawer'
+//import Draw from '../../components/userManager/drawer'
 
 function Red() {
   const {site} = useParams()
     return (
     <div>
-      {site==='login' && (
-        <Draw>
-        <Login/>
-      </Draw>
-      )}
       {site ==='signUp' &&(
-        <Draw>
-          <SingUp />
-        </Draw>
+        <SingUp />
       )}
-      {site}
     </div>
   )
 }
