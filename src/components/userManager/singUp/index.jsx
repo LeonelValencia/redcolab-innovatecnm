@@ -10,11 +10,14 @@ import UserInfo from "./userInfo";
 
 const initForm = { ...userSchema };
 
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "setUserData":
-      return { ...state, contact: action.contact, personal: action.personal };
+      return {
+        ...state,
+        contact: { ...state.contact, email: action.email },
+        personal: action.personal,
+      };
     case "setInterest":
       return { ...state, interest: action.interest };
     case "setSoftSkills":
@@ -41,13 +44,18 @@ export default function SingUp() {
   const [enableStep, setEnableStep] = useState(false);
 
   const steps = [
-    <UserInfo formState={formState} dispatch={dispatch} setEnableStep={setEnableStep} />,
+    <UserInfo
+      formState={formState}
+      dispatch={dispatch}
+      setEnableStep={setEnableStep}
+    />,
     "Create an ad group",
     "Create an ad",
   ];
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setEnableStep(false);
   };
 
   const handleBack = () => {

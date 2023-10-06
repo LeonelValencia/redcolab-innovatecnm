@@ -12,21 +12,17 @@ import MuiAlert from "@mui/material/Alert";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import md5 from "md5";
-import {
-  useNewUserService,
-  userSchema,
-  useValidateEmail,
-} from "../../webServices/user";
+//import md5 from "md5";
+import { useValidateEmail } from "../../webServices/user";
 import DataVerifier from "../../webServices/tools";
-import { useNavigate } from "react-router-dom";
 
 export default function UserInfo({ formState, dispatch, setEnableStep }) {
   const [email, setEmail] = useState("");
-  const [personal, setPersonal] = useState(formState.personal);
+  const [isValidMail, setIsValidMail] = useState(false);
+  const [personal, setPersonal] = useState({ ...formState.personal });
   const [gender, setGender] = useState(false);
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  //const [password, setPassword] = useState("");
+  //const [password2, setPassword2] = useState("");
   const [snackType, setSnackType] = useState({ open: false });
   const [inputsInvalid, setInputsInvalid] = useState({});
   const [validateEmail, { loading }] = useValidateEmail();
@@ -37,7 +33,77 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
     setSnackType({ severity: severity, message: message, open: true });
   };
 
-  const handleValidateEmail = (email) => {};
+  const handleValidateForm = (e) => {
+    e.preventDefault();
+    /*if (password !== password2) {
+        showSnackbar("error", "Las contraseñas no son iguales");
+        setInputsInvalid({
+          password: true,
+        });
+        return null;
+      }*/
+    if (personal.name === "") {
+      showSnackbar("error", "El nombre es obligatorio 😥😥");
+      setInputsInvalid({
+        name: personal.name === "",
+        lastName: personal.lastName === "",
+        email: email === "",
+      });
+      return null;
+    }
+    if (personal.lastName === "") {
+      showSnackbar("error", "El Apellido es obligatorio 😥😥");
+      setInputsInvalid({
+        name: personal.name === "",
+        lastName: personal.lastName === "",
+        email: email === "",
+      });
+      return null;
+    }
+    if (isValidMail) {
+      return null;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      showSnackbar("error", "Email no es correcto. ✉️✉️✉️");
+      setInputsInvalid({
+        name: personal.name === "",
+        lastName: personal.lastName === "",
+        email: email === "",
+      });
+      return null;
+    }
+    try {
+      validateEmail({
+        email: email,
+        onCompleted: (data = {}) => {
+          if (data.hasOwnProperty("user")) {
+            if (!DataVerifier.isValidArray(data.user)) {
+              showSnackbar("success", "Todo se ve Genial, Continua. 🥳🥳🥳");
+              setEnableStep(true);
+              setIsValidMail(true);
+              dispatch({
+                type: "setUserData",
+                contact: { email: email },
+                personal: personal
+            });
+            } else {
+              showSnackbar("error", "El email ya esta registrado 😥😥");
+              setInputsInvalid({
+                email: true,
+              });
+            }
+          } else {
+            console.error("internal validation data.user");
+            showSnackbar("error", "Error interno, inténtelo mas tarde 😥😥");
+          }
+        },
+        onError: (error) => {
+          console.error("validate email query error: ", error);
+          showSnackbar("error", "Tenemos un problema interno. 💥💥💥");
+        },
+      });
+    } catch (error) {}
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -104,7 +170,6 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   type="number"
                   id="age"
@@ -133,14 +198,14 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
                   onChange={(event) => {
                     setInputsInvalid({
                       ...inputsInvalid,
-                      age: false,
+                      gender: false,
                     });
-                    if(event.target.value==="Personalizado"){
-                        setGender(true)
-                        setPersonal({ ...personal, gender: "" });
-                    }else{
-                        setGender(false)
-                        setPersonal({ ...personal, gender: event.target.value });
+                    if (event.target.value === "Personalizado") {
+                      setGender(true);
+                      setPersonal({ ...personal, gender: "" });
+                    } else {
+                      setGender(false);
+                      setPersonal({ ...personal, gender: event.target.value });
                     }
                   }}
                 >
@@ -177,6 +242,7 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
                 <TextField
                   required
                   fullWidth
+                  disabled={isValidMail}
                   id="email"
                   label="Email"
                   error={inputsInvalid?.email || !validMail}
@@ -206,12 +272,11 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
                       ...inputsInvalid,
                       mobile: false,
                     });
-                    setPersonal({...personal, mobile: event.target.value});
+                    setPersonal({ ...personal, mobile: event.target.value });
                   }}
                 />
               </Grid>
-              {
-                /*
+              {/*
                 <Grid item xs={12}>
                 <TextField
                   required
@@ -254,18 +319,18 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
                   }}
                 />
               </Grid>
-                */
-              }
-              
+                */}
+
               <Grid item xs={12}>
                 <Typography
                   variant="body2"
                   color="text.secondary"
                   align="center"
                 >
-                  Valida tus datos y presiona NEXT {" "}
-                 {//<Link>Términos y Condiciones</Link>
-                 }
+                  Valida tus datos y presiona NEXT{" "}
+                  {
+                    //<Link>Términos y Condiciones</Link>
+                  }
                 </Typography>
               </Grid>
             </Grid>
@@ -274,7 +339,7 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => {}}
+              onClick={handleValidateForm}
             >
               Validar
             </LoadingButton>
