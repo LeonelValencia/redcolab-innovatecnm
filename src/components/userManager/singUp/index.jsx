@@ -72,7 +72,6 @@ export default function SingUp() {
     "Create an ad",
   ];
 
-
   return (
     <div>
       {steps[activeStep]}

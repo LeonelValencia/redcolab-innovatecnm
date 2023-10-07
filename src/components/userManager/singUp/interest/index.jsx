@@ -5,6 +5,7 @@ import { useGetInterests } from "../../../webServices/interest";
 import CircularSpinner from "../../../spinners";
 import DataVerifier from "../../../webServices/tools";
 import INTEREST_TOPICS from "./topics.json";
+import Typography from "@mui/material/Typography";
 import "./interest.css";
 import Box from "@mui/material/Box";
 
@@ -14,20 +15,18 @@ import Stack from "@mui/material/Stack";
 
 export { INTEREST_TOPICS };
 
-export default function Interest() {
+export default function Interest(props) {
   const { interests, loading } = useGetInterests();
 
   if (loading) {
     return <CircularSpinner />;
   }
-  console.log(interests);
-
   return (
     <Box
       component="main"
       sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
     >
-      {DataVerifier.isValidArray(interests) && <Cards interests={interests} />}
+      {DataVerifier.isValidArray(interests) && <Cards interests={interests} {...props} />}
     </Box>
   );
 }
@@ -37,12 +36,19 @@ const getRandomColor = (colors) => {
   return colors[indiceAleatorio];
 };
 
-function Cards({ interests }) {
+function Cards({ interests, formState, dispatch, setEnableStep, handleNext }) {
   const [_interests, set_interests] = useState(interests);
-  const [selectInterests, setSelectInterests] = useState([]);
+  const [selectInterests, setSelectInterests] = useState([...formState.interest]);
   const [selectTopics, setTopic] = useState({...INTEREST_TOPICS})
 
-  console.log(selectInterests);
+  const handleSetInterest=()=>{
+    dispatch({
+      type: "setInterest",
+      interest: selectInterests
+    })
+    setEnableStep(true)
+    handleNext()
+  }
   
   const handleSelect = (color,_id,index) => {
     const newInterest = [..._interests];
@@ -69,10 +75,15 @@ function Cards({ interests }) {
   return (
     <div>
       <div style={{position: "sticky", top: 0, zIndex: "5"}} >
+        <Typography component="h1" variant="h5" >
+          Selecciona tus intereses
+        </Typography>
+        
       <Button
               fullWidth
               variant="contained"
-              disabled={selectInterests.length < 10}
+              disabled={selectInterests.length < 1}
+              onClick={handleSetInterest}
             >
               Continuar
             </Button>
@@ -106,7 +117,8 @@ function Cards({ interests }) {
         {_interests.map((interest, i) => {
           const topic = INTEREST_TOPICS[interest.area];
           const color = interest?.color ? interest.color : getRandomColor(topic.colors);
-          const styleSelect = interest.isSelect
+          const isSelect = selectInterests.find(id => id===interest._id ) ? true : false
+          const styleSelect = isSelect
           ? {
               background: `radial-gradient(circle, #FFFFFF 10%, ${topic.color} 100%)`,
               border: `3px solid ${topic.color}`,
