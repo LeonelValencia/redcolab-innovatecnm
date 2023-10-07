@@ -1,0 +1,59 @@
+{
+    "__version": "0.0.1",
+    "name": "Test de Moss",
+    "authors": "Rudolf H. Moss y Berenice L. Moss",
+    "objective": "Evaluación de nivel de adaptabilidad social",
+    "description": "Un test para detectar el nivel de adaptabilidad social. Para el desarrollo colaborativo es importante que la conozcas pues te permite saber tus capacidades de participación, supervisión, evaluación y resolución de problemas interpersonales, con la finalidad de que mejores tu desempeño al trabajar en equipo. Las limitaciones son; no aporta suficientes datos en relación a la personalidad, mide mas aspectos de sociabilidad que aspectos de la personalidad.",
+    "skills":[
+        {
+            "code": "HS",
+            "name": "Habilidad en supervisión",
+            "description": "Proceso de interacción entre personas, en la cual una de ellas conduce, mediante su influencia personal y poder, las energías, potencialidades y actividades de un grupo, para alcanzar los objetivos (satisfacer las necesidades de la persona y la organización)",
+            "score":{
+                "type": "percentage",
+                "max": 100,
+                "min": 0
+            }
+        },
+        {
+            "code": "CDRH",
+            "name": "Capacidad de decisiones en las relaciones humanas",
+            "description": "La flexibilidad y libertad de que disponen los gerentes les permite tomar decisiones en: \nA) Cuestiones relacionadas con la manera de asignar las diferentes tareas \nB) Métodos a seguir para obtener las metas del equipo de trabajo \nC) Modo de solucionar problemas del grupo en cuanto a calidad de productos o servicios ",
+            "score":{
+                "type": "percentage",
+                "max": 100,
+                "min": 0
+            }
+        },
+        {
+            "code": "CEPI",
+            "name": "Capacidad de evaluación de problemas interpersonales",
+            "description": "La comprensión, establecer buenas relaciones interpersonales y el compromiso no se pueden producir sin una comunicación efectiva. Incluye el correr riesgos, críticas constructivas, el escuchar de forma activa, el reconocer los intereses y los logros de otros.",
+            "score":{
+                "type": "percentage",
+                "max": 100,
+                "min": 0
+            }
+        },
+        {
+            "code": "HERI",
+            "name": "Habilidad para establecer relaciones interpersonales",
+            "description": "Las personas los buscaran y manifestaran sus problemas, porque perciben que les agrada las personas y que está dispuesto a escucharlas, ya que tiene la paciencia y el agrado para ir resolviendo los problemas principalmente de sus amistades más allegadas. Son excelentes consejeros. ",
+            "score":{
+                "type": "percentage",
+                "max": 100,
+                "min": 0
+            }
+        },
+        {
+            "code": "SCTRJ",
+            "name": "Sentido común y tacto en las relaciones interpersonales",
+            "description": "Es un error no tomar en cuenta las habilidades técnicas y funciones al formar un equipo. Lo cual hace muy difícil que se logre el objetivo. Es importantes entablar la confianza de los subalternos para identificar la problemática. ",
+            "score":{
+                "type": "percentage",
+                "max": 100,
+                "min": 0
+            }
+        }
+    ]
+}
