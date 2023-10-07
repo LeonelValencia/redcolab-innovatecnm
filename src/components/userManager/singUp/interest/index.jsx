@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useGetInterests } from "../../../webServices/interest";
 import CircularSpinner from "../../../spinners";
@@ -10,20 +7,10 @@ import DataVerifier from "../../../webServices/tools";
 import INTEREST_TOPICS from "./topics.json";
 import "./interest.css";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 
-const drawerWidth = 240;
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+
 
 export { INTEREST_TOPICS };
 
@@ -52,62 +39,96 @@ const getRandomColor = (colors) => {
 
 function Cards({ interests }) {
   const [_interests, set_interests] = useState(interests);
+  const [selectInterests, setSelectInterests] = useState([]);
+  const [selectTopics, setTopic] = useState({...INTEREST_TOPICS})
+
+  console.log(selectInterests);
+  
+  const handleSelect = (color,_id,index) => {
+    const newInterest = [..._interests];
+    let select = [...selectInterests]
+    newInterest[index].color = color
+    if (newInterest[index].isSelect) {
+      newInterest[index].isSelect = false
+      let indx = select.findIndex(s=>s===_id)
+      select.splice(indx,1)
+    } else {
+      newInterest[index].isSelect = true
+      select.push(_id)
+    }
+    setSelectInterests(select)
+    set_interests(newInterest);
+  }
+
+  const handleTopicSelect = (key)=>{
+    const newsTopic = {...selectTopics}
+    newsTopic[key].isSelect = newsTopic[key].isSelect ? false : true
+    setTopic({...newsTopic})
+  }
+  
   return (
-    <Container sx={{ py: 8 }} maxWidth="md">
+    <div>
+      <div style={{position: "sticky", top: 0, zIndex: "5"}} >
+      <Button
+              fullWidth
+              variant="contained"
+              disabled={selectInterests.length < 10}
+            >
+              Continuar
+            </Button>
+      </div>
+      <Container sx={{ py: 4 }} maxWidth="md">
       {/* End hero unit backgroundColor: "#FF5522" */}
-      <Grid container spacing={2}>
+      <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
+        {Object.keys(selectTopics).map((key,i)=>{
+          const topic = selectTopics[key]
+          const styleSelect = topic.isSelect
+          ? {
+              background: `radial-gradient(circle, #FFFFFF 10%, ${topic.color} 100%)`,
+              border: `3px solid ${topic.color}`,
+            }
+          : {
+              background: `#ffffff`,
+              border: `1px solid #000000`,
+            };
+          return(
+            <Chip
+          label={topic.label}
+          key={"topic_"+key}
+          sx={{
+            ...styleSelect,
+          }}
+          className="interestCard"
+          onClick={()=>{handleTopicSelect(key)}}
+        />
+          )
+        })}
         {_interests.map((interest, i) => {
           const topic = INTEREST_TOPICS[interest.area];
-          const color = getRandomColor(topic.colors);
+          const color = interest?.color ? interest.color : getRandomColor(topic.colors);
           const styleSelect = interest.isSelect
-            ? {
-                background: `linear-gradient(132deg, #FFFFFF 10%, ${color} 100%)`,
-                border: `3px solid ${color}`,
-              }
-            : {
-                background: `#ffffff`,
-                border: `0px solid #000000`,
-              };
+          ? {
+              background: `radial-gradient(circle, #FFFFFF 10%, ${topic.color} 100%)`,
+              border: `3px solid ${topic.color}`,
+            }
+          : {
+              background: `#ffffff`,
+              border: `1px solid #000000`,
+            };
           return (
-            <Grid
-              item
-              key={"interest_" + interest._id + "_" + i}
-              xs={12}
-              sm={6}
-              md={3}
-            >
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  ...styleSelect,
-                }}
-                className="interestCard"
-                onClick={() => {
-                  const newInterest = [..._interests];
-                  newInterest[i].isSelect = newInterest[i].isSelect
-                    ? false
-                    : true;
-                  set_interests(newInterest);
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="caption">
-                    {interest.area}
-                  </Typography>
-                  <Typography gutterBottom variant="h6" component="h2">
-                    {interest.concept}
-                  </Typography>
-                  <Typography variant="body2">
-                    {interest.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <Chip
+              label={interest.concept}
+              key={interest._id}
+              sx={{
+                ...styleSelect,
+              }}
+              className="interestCard"
+              onClick={()=>{handleSelect(color,interest._id,i)}}
+            />
           );
         })}
-      </Grid>
+      </Stack>
     </Container>
+    </div>
   );
 }
