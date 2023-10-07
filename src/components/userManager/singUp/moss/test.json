@@ -1,0 +1,587 @@
+{
+  "agents": {
+    "HS": {
+      "questions": [
+        {
+          "question": "Tiene usted un empleado muy eficiente pero que constantemente se queja del trabajo, sus quejas producen mal efecto en los demás empleados, lo mejor sería:",
+          "answers": [
+            {
+              "_id": "HS-01-99",
+              "answer": "Pedir a los demás empleados que no hagan caso."
+            },
+            {
+              "_id": "HS-02-98",
+              "answer": "Averiguar la causa de esa actitud y procurar su modificación."
+            },
+            {
+              "_id": "HS-03-97",
+              "answer": "Cambiarlo de departamento donde quede a cargo de otro jefe."
+            },
+            {
+              "_id": "HS-04-96",
+              "answer": "Permitirle planear lo más posible acerca de su trabajo."
+            }
+          ],
+          "match": "HS-02-98",
+          "score": 17
+        },
+        {
+          "question": "Un empleado de 60 años de edad que ha sido leal a la empresa durante 25 años se queja del exceso de trabajo. Lo mejor sería:",
+          "answers": [
+            {
+              "_id": "HS-01-95",
+              "answer": "Decirle que vuelva a su trabajo porque si no será desvinculado"
+            },
+            {
+              "_id": "HS-02-94",
+              "answer": " Despedirlo, sustituyéndolo por alguien más joven."
+            },
+            {
+              "_id": "HS-03-93",
+              "answer": "Darle un aumento de sueldo que evite que continúe quejándose."
+            },
+            {
+              "_id": "HS-04-92",
+              "answer": "Reducir su trabajo."
+            }
+          ],
+          "match": "HS-04-92",
+          "score": 17
+        },
+        {
+          "question": "Una persona recién ascendida a un mejor puesto de autoridad lograría mejor sus metas y la buena voluntad de los empleados:",
+          "answers": [
+            {
+              "_id": "HS-01-91",
+              "answer": "Tratando de que cada empleado entienda qué es la verdadera eficiencia."
+            },
+            {
+              "_id": "HS-02-90",
+              "answer": "Ascendiendo cuanto antes a quienes considere lo merezcan."
+            },
+            {
+              "_id": "HS-03-89",
+              "answer": "Preguntando confidencialmente a cada empleado en cuanto a los cambios que estiman necesarios"
+            },
+            {
+              "_id": "HS-04-88",
+              "answer": "Seguir los sistemas del anterior jefe y gradualmente hacer los cambios necesarios."
+            }
+          ],
+          "match": "HS-04-88",
+          "score": 16
+        },
+        {
+          "question": "Es usted un ejecutivo y dos de sus empleados se llevan mal, ambos son eficientes. Lo mejor sería:",
+          "answers": [
+            {
+              "_id": "HS-01-87",
+              "answer": "Despedir al menos eficiente"
+            },
+            {
+              "_id": "HS-02-86",
+              "answer": "Dar trabajo en común que a ambos interese."
+            },
+            {
+              "_id": "HS-03-85",
+              "answer": "Hacerles ver el daño que se hacen."
+            },
+            {
+              "_id": "HS-04-84",
+              "answer": "Darles trabajos distintos."
+            }
+          ],
+          "match": "HS-04-84",
+          "score": 17
+        },
+        {
+          "question": "Es usted un maestro de primaria. Camino a la escuela tras de la primera nevada, algunos de sus alumnos lanzan bolas de nieve. Desde el punto de vista de la buena administración de la escolar, usted debería:",
+          "answers": [
+            {
+              "_id": "HS-01-83",
+              "answer": "Castigarle ahí mismo por su indisciplina."
+            },
+            {
+              "_id": "HS-02-82",
+              "answer": "Decirles que de volverlo a hacer los castigará."
+            },
+            {
+              "_id": "HS-03-81",
+              "answer": "Pasar la queja a sus padres."
+            },
+            {
+              "_id": "HS-04-80",
+              "answer": "Tomarlo como broma y no hacer caso al respecto."
+            }
+          ],
+          "match": "HS-04-80",
+          "score": 17
+        },
+        {
+          "question": "Se le ha asignado un puesto ejecutivo, en una organización. Para ganar el respeto y la admiración de sus subordinados, sin perjuicio de sus planes, habría que:",
+          "answers": [
+            {
+              "_id": "HS-01-79",
+              "answer": "Ceder en todos los pequeños puntos posibles."
+            },
+            {
+              "_id": "HS-02-78",
+              "answer": "Tratar de convencerlos de todas sus ideas."
+            },
+            {
+              "_id": "HS-03-77",
+              "answer": "Ceder parcialmente en todas las cuestiones importantes."
+            },
+            {
+              "_id": "HS-04-76",
+              "answer": "Abogar por muchas reformas."
+            }
+          ],
+          "match": "HS-04-76",
+          "score": 16
+        }
+      ]
+    },
+    "CDRH": {
+      "questions": [
+        {
+          "question": "Uno de los socios, sin autoridad sobre usted le ordena haga algo en forma bien distinta de lo que planeaba. ¿Qué haría usted? ",
+          "answers": [
+            {
+              "_id": "CDRH-01-99",
+              "answer": "Acatar la orden y no armar mayor revuelo."
+            },
+            {
+              "_id": "CDRH-02-98",
+              "answer": "Ignorar las indicaciones y hacerlo según había planeado."
+            },
+            {
+              "_id": "CDRH-03-97",
+              "answer": "Decirle que esto no es asunto que a usted le interesa y que usted hará las cosas a su modo."
+            },
+            {
+              "_id": "CDRH-04-96",
+              "answer": "Decirle que lo haga él mismo."
+            }
+          ],
+          "match": "CDRH-02-98",
+          "score": 20
+        },
+        {
+          "question": "Trabaja usted en una industria y su jefe quiere que tome un curso relacionado con su carrera pero que sea compatible con el horario de su trabajo. Lo mejor sería:",
+          "answers": [
+            {
+              "_id": "CDRH-01-95",
+              "answer": "Continuar normalmente su carrera e informar al jefe sí pregunta."
+            },
+            {
+              "_id": "CDRH-02-94",
+              "answer": "Explicar la situación u obtener su opinión en cuanto a la importancia relativa de ambas situaciones."
+            },
+            {
+              "_id": "CDRH-03-93",
+              "answer": "Dejar la escuela en relación a los intereses del trabajo."
+            },
+            {
+              "_id": "CDRH-04-92",
+              "answer": "Asistir en forma alterna y no hacer comentarios."
+            }
+          ],
+          "match": "CDRH-02-94",
+          "score": 20
+        },
+        {
+          "question": "Va usted a ser maestro de ceremonias, en una cena el próximo sábado día en que por la mañana, debido a enfermedad de su familia, se ve imposibilitado para asistir lo mejor sería:",
+          "answers": [
+            {
+              "_id": "CDRH-01-91",
+              "answer": "Cancelar la cena."
+            },
+            {
+              "_id": "CDRH-02-90",
+              "answer": "Encontrar quien lo sustituya."
+            },
+            {
+              "_id": "CDRH-03-89",
+              "answer": "Detallar los planes que tenía y evitarlos."
+            },
+            {
+              "_id": "CDRH-04-88",
+              "answer": "Enviar una nota explicando la causa de su ausencia."
+            }
+          ],
+          "match": "CDRH-02-90",
+          "score": 20
+        },
+        {
+          "question": "Es usted un empleado ordinario en una oficina grande. El jefe entra cuando usted lee en vez de trabajar. Lo mejor sería:",
+          "answers": [
+            {
+              "_id": "CDRH-01-87",
+              "answer": "Doblar el periódico y volver a trabajo."
+            },
+            {
+              "_id": "CDRH-02-86",
+              "answer": "Pretender que obtiene recortes necesarios al trabajo."
+            },
+            {
+              "_id": "CDRH-03-85",
+              "answer": "Tratar de interesar al jefe leyéndole un encabezado importante."
+            },
+            {
+              "_id": "CDRH-04-84",
+              "answer": "Seguir leyendo sin mostrar vergüenza."
+            }
+          ],
+          "match": "CDRH-01-87",
+          "score": 20
+        },
+        {
+          "question": "Un compañero flojea de tal manera que usted le toca más de lo que le corresponde. La mejor forma de conservar las relaciones sería:",
+          "answers": [
+            {
+              "_id": "CDRH-01-83",
+              "answer": "Explicar el caso al jefe cortésmente."
+            },
+            {
+              "_id": "CDRH-02-82",
+              "answer": "Cortésmente indicarle que debe hacer lo que le corresponde o que usted se quejara con el jefe."
+            },
+            {
+              "_id": "CDRH-03-81",
+              "answer": "Hacer tanto como pueda eficientemente y no decir nada del caso al jefe."
+            },
+            {
+              "_id": "CDRH-04-80",
+              "answer": "Hacer lo suyo y dejar pendiente lo que el compañero no haga."
+            }
+          ],
+          "match": "CDRH-01-83",
+          "score": 20
+        }
+      ]
+    },
+    "CEPI": {
+      "questions": [
+        {
+          "question": "Un agente viajero con 15 años de antigüedad decide, presionado por su familia sentar raíces. Se le cambia a las oficinas generales. Es de esperar que:",
+          "answers": [
+            {
+              "_id": "CEPI-01-01",
+              "answer": "Guste de los descansos del trabajo de oficina."
+            },
+            {
+              "_id": "CEPI-02-02",
+              "answer": "Se sienta inquieto por la rutina de la oficina."
+            },
+            {
+              "_id": "CEPI-03-03",
+              "answer": "Busque otro trabajo."
+            },
+            {
+              "_id": "CEPI-04-04",
+              "answer": "Resulte muy ineficiente en el trabajo de oficina."
+            }
+          ],
+          "match": "CEPI-02-02",
+          "score": 13
+        },
+        {
+          "question": "Un joven invita a una dama al teatro, al llegar se percata de que ha olvidado la cartera. Sería mejor:",
+          "answers": [
+            {
+              "_id": "CEPI-01-05",
+              "answer": "Tratar de obtener boletos dejando el reloj en prenda."
+            },
+            {
+              "_id": "CEPI-02-06",
+              "answer": "Buscar a algún amigo a quien pedir prestado."
+            },
+            {
+              "_id": "CEPI-03-07",
+              "answer": "Decidir de acuerdo con ella lo procedente."
+            },
+            {
+              "_id": "CEPI-04-08",
+              "answer": "Dar una excusa plausible para ir a casa por dinero."
+            }
+          ],
+          "match": "CEPI-03-07",
+          "score": 12
+        },
+        {
+          "question": "Una señora de especiales méritos que por largo tiempo ha dirigido trabajos benéficos dejando las labores de su casa a cargo de la servidumbre, se cambia a otra población. Es de esperarse que ella:",
+          "answers": [
+            {
+              "_id": "CEPI-01-10",
+              "answer": "Se sienta insatisfecha de su nuevo hogar."
+            },
+            {
+              "_id": "CEPI-02-11",
+              "answer": "Se interese más por los trabajos domésticos."
+            },
+            {
+              "_id": "CEPI-03-12",
+              "answer": "Intervenga poco a poco en la vida de la comunidad, continuando así sus intereses."
+            },
+            {
+              "_id": "CEPI-04-13",
+              "answer": "Adopte nuevos intereses en la nueva comunidad."
+            }
+          ],
+          "match": "CEPI-03-12",
+          "score": 13
+        },
+        {
+          "question": "Un joven de 24 años gasta bastante tiempo y dinero en diversiones, solo ha hecho ver que así no logrará al éxito en el trabajo. Probablemente cambie sus costumbres. Si:",
+          "answers": [
+            {
+              "_id": "CEPI-01-19",
+              "answer": "Sus hábitos nocturnos lesionan su salud."
+            },
+            {
+              "_id": "CEPI-02-18",
+              "answer": "Sus amigos enfatizan el daño que se hace a sí mismo."
+            },
+            {
+              "_id": "CEPI-03-17",
+              "answer": "Su jefe se da cuenta y lo previene."
+            },
+            {
+              "_id": "CEPI-04-16",
+              "answer": "Se interesa en el desarrollo de alguna fase de su trabajo."
+            }
+          ],
+          "match": "CEPI-04-16",
+          "score": 12
+        },
+        {
+          "question": "El señor González ha estado conservando su puesto subordinado por 10 años, desempeña su trabajo callado y confidencialmente y se le extrañará cuando se vaya. De obtener el trabajo en otra empresa, muy probablemente:",
+          "answers": [
+            {
+              "_id": "CEPI-01-a",
+              "answer": "Asuma fácilmente responsabilidad como supervisor."
+            },
+            {
+              "_id": "CEPI-02-b",
+              "answer": "Haga ver de inmediato su valor."
+            },
+            {
+              "_id": "CEPI-03-c",
+              "answer": "Sea lento para abrirse las necesarias oportunidades."
+            },
+            {
+              "_id": "CEPI-04-d",
+              "answer": "Renuncie ante la más ligera crítica de su trabajo."
+            }
+          ],
+          "match": "CEPI-03-c",
+          "score": 13
+        },
+        {
+          "question": "En igualdad de circunstancias el empleado que mejor se adapta a un nuevo puesto es aquel que:",
+          "answers": [
+            {
+              "_id": "CEPI-01-AA",
+              "answer": "Ha sido bueno en puestos anteriores"
+            },
+            {
+              "_id": "CEPI-02-AB",
+              "answer": "Ha tenido éxito durante 10 años en su puesto."
+            },
+            {
+              "_id": "CEPI-03-AC",
+              "answer": "Tiene sus propias ideas e invariablemente se rige por ellas."
+            },
+            {
+              "_id": "CEPI-04-AD",
+              "answer": "Cuenta con una buena recomendación de su jefe anterior."
+            }
+          ],
+          "match": "CEPI-01-AA",
+          "score": 12
+        },
+        {
+          "question": "Salinas, eficiente, pero de esos que “todo lo saben”, critica a Montoya, el jefe opina que la idea de Montoya ahorra tiempo. Probablemente Salinas:",
+          "answers": [
+            {
+              "_id": "CEPI-01-55",
+              "answer": "Pida otro trabajo al jefe."
+            },
+            {
+              "_id": "CEPI-02-54",
+              "answer": "Lo haga a su modo sin comentarios."
+            },
+            {
+              "_id": "CEPI-03-53",
+              "answer": "Lo haga con Montoya, pero siga criticándolo."
+            },
+            {
+              "_id": "CEPI-04-52",
+              "answer": "Lo haga con Montoya, pero mal a propósito."
+            }
+          ],
+          "match": "CEPI-03-53",
+          "score": 13
+        },
+        {
+          "question": "Un hombre de 64 años tuvo algún éxito cuando joven como político, sus modos directos le han impedido descollar los últimos 20 años, lo más probable es que:",
+          "answers": [
+            {
+              "_id": "CEPI-01-FA",
+              "answer": "Persista en su manera de ser."
+            },
+            {
+              "_id": "CEPI-02-FB",
+              "answer": "Cambie para lograr éxito."
+            },
+            {
+              "_id": "CEPI-03-FC",
+              "answer": "Forme un nuevo partido político."
+            },
+            {
+              "_id": "CEPI-04-FD",
+              "answer": "Abandone la política por inmoral."
+            }
+          ],
+          "match": "CEPI-01-FA",
+          "score": 12
+        }
+      ]
+    },
+    "HERI": {
+      "questions": [
+        {
+          "question": "Se le ha asignado un puesto en una gran empresa. La mejor forma de establecer relaciones amistosas y cordiales con sus nuevos compañeros será:",
+          "answers": [
+            {
+              "_id": "HERI-01-00",
+              "answer": "Evitando tomar nota de los errores en que incurran."
+            },
+            {
+              "_id": "HERI-02-01",
+              "answer": "Hablando bien de ellos al jefe."
+            },
+            {
+              "_id": "HERI-03-10",
+              "answer": "Mostrando interés en el trabajo de ellos."
+            },
+            {
+              "_id": "HERI-04-11",
+              "answer": "Pidiéndoles les permitan hacer los trabajos que usted puede hacer mejor."
+            }
+          ],
+          "match": "HERI-03-10",
+          "score": 20
+        },
+        {
+          "question": "Usted ha tenido experiencia como vendedor y acaba de conseguir de una tienda un empleo. La mejor forma de relacionarse con los empleados del departamento seria.",
+          "answers": [
+            {
+              "_id": "HERI-01-99",
+              "answer": "Permitirle hacer la mayoría de las ventas por unos días en tanto observa sus métodos."
+            },
+            {
+              "_id": "HERI-02-98",
+              "answer": "Tratar de instituir los métodos que anteriormente le fueron útiles."
+            },
+            {
+              "_id": "HERI-03-97",
+              "answer": "Adaptarse mejor a las condiciones y aceptar consejos de sus compañeros."
+            },
+            {
+              "_id": "HERI-04-96",
+              "answer": "Pedir al jefe todo el consejo necesario."
+            }
+          ],
+          "match": "HERI-03-97",
+          "score": 20
+        },
+        {
+          "question": "Es usted un joven empleado que va a comer con una maestra a quien conoce superficialmente. Lo mejor sería iniciar la conversación acerca de:",
+          "answers": [
+            {
+              "_id": "HERI-01-96",
+              "answer": "Algún tópico de actualidad."
+            },
+            {
+              "_id": "HERI-02-95",
+              "answer": "Algún aspecto interesante de su propio trabajo."
+            },
+            {
+              "_id": "HERI-03-94",
+              "answer": "Las tendencias actuales en el terreno docente."
+            },
+            {
+              "_id": "HERI-04-93",
+              "answer": "Las sociedades de padres de familia."
+            }
+          ],
+          "match": "HERI-01-96",
+          "score": 20
+        },
+        {
+          "question": "Quiere pedirle un favor a un conocido con quien tiene poca confianza. La mejor forma de lograrlo sería",
+          "answers": [
+            {
+              "_id": "HERI-01-95",
+              "answer": "Haciéndole creer que será él quien se beneficie más."
+            },
+            {
+              "_id": "HERI-02-94",
+              "answer": "Enfatice la importancia que para usted tiene que se le conceda."
+            },
+            {
+              "_id": "HERI-03-93",
+              "answer": "Ofrecer algo de retribución."
+            },
+            {
+              "_id": "HERI-04-92",
+              "answer": "Decir que lo que desea en forma breve indicando los motivos."
+            }
+          ],
+          "match": "HERI-04-92",
+          "score": 20
+        },
+        {
+          "question": "Preside el Comité de Mejoras Materiales en su colonia; las últimas reuniones han sido de escasa asistencia. Se mejoraría la asistencia:",
+          "answers": [
+            {
+              "_id": "HERI-01-91",
+              "answer": "Visitando vecinos prominentes explicándoles los problemas"
+            },
+            {
+              "_id": "HERI-02-90",
+              "answer": "Avisar de un programa interesante para la reunión."
+            },
+            {
+              "_id": "HERI-03-89",
+              "answer": "Poner avisos en los lugares públicos."
+            },
+            {
+              "_id": "HERI-04-87",
+              "answer": "Enviar avisos personales."
+            }
+          ],
+          "match": "HERI-02-90",
+          "score": 20
+        }
+      ]
+    },
+    "SCTRJ": {
+      "questions": [
+        {
+          "question": "",
+          "answers": [
+            {
+              "_id": "SCTRJ",
+              "answer": ""
+            }
+          ],
+          "match": "",
+          "score": 0
+        }
+      ]
+    }
+  }
+}
