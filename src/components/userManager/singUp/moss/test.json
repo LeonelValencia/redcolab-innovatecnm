@@ -571,15 +571,142 @@
     "SCTRJ": {
       "questions": [
         {
-          "question": "",
+          "question": "Usted visita a un amigo íntimo que ha estado enfermo por algún tiempo. Lo mejor sería:",
           "answers": [
             {
-              "_id": "SCTRJ",
-              "answer": ""
+              "_id": "SCTRJ-01-99",
+              "answer": "Platicarle sus diversiones recientes."
+            },
+            {
+              "_id": "SCTRJ-02-98",
+              "answer": "Platicarle nuevas cosas referentes a sus amigos mutuos."
+            },
+            {
+              "_id": "SCTRJ-03-97",
+              "answer": "Comentar su enfermedad"
+            },
+            {
+              "_id": "SCTRJ-04-96",
+              "answer": "Enfatizar lo mucho que le apena verle enfermo"
             }
           ],
-          "match": "",
-          "score": 0
+          "match": "SCTRJ-02-98",
+          "score": 16.666
+        },
+        {
+          "question": "Tiene dos invitados a cenar, el uno radical y el otro conservador. Surge una acalorada discusión respecto a la política. Lo mejor sería:",
+          "answers": [
+            {
+              "_id": "SCTRJ-01-95",
+              "answer": "Tomar partido."
+            },
+            {
+              "_id": "SCTRJ-02-94",
+              "answer": "Intentar cambiar de tema."
+            },
+            {
+              "_id": "SCTRJ-03-93",
+              "answer": "Intervenir dando los propios puntos de vista y mostrar donde ambos pecan de extremosos"
+            },
+            {
+              "_id": "SCTRJ-40-92",
+              "answer": "Pedir cambien de tema para evitar mayor discusión."
+            }
+          ],
+          "match": "SCTRJ-02-94",
+          "score": 16.666
+        },
+        {
+          "question": "Tras de haber hecho un buen número de favores a un amigo, este empieza a dar por hecho que usted será quien le resuelva todas sus pequeñas dificultades. La mejor forma de readaptar la situación sin ofenderle sería",
+          "answers": [
+            {
+              "_id": "SCTRJ-01-91",
+              "answer": "Explicar el daño que se está causando."
+            },
+            {
+              "_id": "SCTRJ-20-90",
+              "answer": "Pedir a un amigo mutuo que trate de arreglar las cosas."
+            },
+            {
+              "_id": "SCTRJ-03-89",
+              "answer": "Ayudarle una vez más pero de tal manera que sienta que mejor hubiera sido no haberlo solicitado"
+            },
+            {
+              "_id": "SCTRJ-04-88",
+              "answer": "Darle una excusa para no seguir ayudándole."
+            }
+          ],
+          "match": "SCTRJ-04-88",
+          "score": 16.666
+        },
+        {
+          "question": "Vive a 15 km. del centro y ha ofrecido llevar de regreso a un amigo a las 16:00 p.m. él lo espera desde las 15:00 y a las 16:00 horas usted se entera que no podrá salir antes de las 17:30, sería mejor: ",
+          "answers": [
+            {
+              "_id": "SCTRJ-01-87",
+              "answer": "Pedirle un taxi."
+            },
+            {
+              "_id": "SCTRJ-02-86",
+              "answer": "Explicarle y dejar que él decida."
+            },
+            {
+              "_id": "SCTRJ-03-85",
+              "answer": "Pedirle que espere hasta las 17:30 horas."
+            },
+            {
+              "_id": "SCTRJ-04-84",
+              "answer": "Proponerle que se lleve su auto."
+            }
+          ],
+          "match": "SCTRJ-02-86",
+          "score": 16.666
+        },
+        {
+          "question": "Un conocido le platica acerca de una afición que él tiene, su conversación le aburre. Lo mejor sería:",
+          "answers": [
+            {
+              "_id": "SCTRJ-01-83",
+              "answer": "Escuchar de manera cortés, pero aburrida"
+            },
+            {
+              "_id": "SCTRJ-02-82",
+              "answer": "Escuchar con fingido interés"
+            },
+            {
+              "_id": "SCTRJ-03-81",
+              "answer": "Decirle francamente que el tema no le interesa"
+            },
+            {
+              "_id": "SCTRJ-04-80",
+              "answer": "Mirar el reloj con impaciencia"
+            }
+          ],
+          "match": "SCTRJ-01-83",
+          "score": 16.666
+        },
+        {
+          "question": "Es usted un joven que encuentra en la calle a una mujer de más edad a quien apenas conoce y que parece haber estado llorando. Lo mejor sería:",
+          "answers": [
+            {
+              "_id": "SCTRJ-01-79",
+              "answer": " Preguntarle por qué está triste."
+            },
+            {
+              "_id": "SCTRJ-02-78",
+              "answer": "Pasar el brazo por el hombro y consolarla."
+            },
+            {
+              "_id": "SCTRJ-02-77",
+              "answer": "Simular no advertir su pena."
+            },
+            {
+              "_id": "SCTRJ-02-76",
+              "answer": "Simular no haberla visto."
+            }
+          ],
+          "match": "SCTRJ-02-77",
+          "score": 16.6666
         }
       ]
     }
