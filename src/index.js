@@ -14,24 +14,15 @@ import Red from "./apps/red";
 import { ApolloProvider } from "@apollo/client";
 import client from "./components/webServices";
 //import AuthProvider from "./components/userManager/authProvider";
-import TestNewUser from "./apps/testForm";
 import Super from "./apps/super";
 
-/*
-{
-    path: "/testNewUser",
-    element: <TestNewUser />,
-    children: [
-      {
-        path: "id"
-      }
-    ]
-  },
-  
-*/
 
 const router = createBrowserRouter([
   
+  {
+    path: "/super",
+    element: <Super />,
+  },
   {
     path: "/",
     element: (
@@ -61,10 +52,6 @@ const router = createBrowserRouter([
             path: ":site",
           },
         ],
-      },
-      {
-        path: "/super",
-        element: <Super />,
       },
     ],
   },

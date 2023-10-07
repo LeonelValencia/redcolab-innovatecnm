@@ -7,6 +7,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { userSchema } from "../../webServices/user";
 import Typography from "@mui/material/Typography";
 import UserInfo from "./userInfo";
+import Interest from "./interest";
 
 const initForm = { ...userSchema };
 
@@ -15,7 +16,7 @@ const reducer = (state, action) => {
     case "setUserData":
       return {
         ...state,
-        contact: { ...state.contact, email: action.email },
+        contact: { ...state.contact, email: action.contact.email },
         personal: action.personal,
       };
     case "setInterest":
@@ -43,16 +44,9 @@ export default function SingUp() {
   const [activeStep, setActiveStep] = useState(0);
   const [enableStep, setEnableStep] = useState(false);
 
-  const steps = [
-    <UserInfo
-      formState={formState}
-      dispatch={dispatch}
-      setEnableStep={setEnableStep}
-    />,
-    "Create an ad group",
-    "Create an ad",
-  ];
+  console.log(formState);
 
+  
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setEnableStep(false);
@@ -61,6 +55,23 @@ export default function SingUp() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  const steps = [
+    <UserInfo
+      formState={formState}
+      dispatch={dispatch}
+      setEnableStep={setEnableStep}
+      handleNext={handleNext}
+    />,
+    <Interest
+      formState={formState}
+      dispatch={dispatch}
+      setEnableStep={setEnableStep}
+      handleNext={handleNext}
+    />,
+    "Create an ad",
+  ];
+
 
   return (
     <div>

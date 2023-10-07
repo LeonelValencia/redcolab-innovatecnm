@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
+//import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -16,7 +17,7 @@ import Select from "@mui/material/Select";
 import { useValidateEmail } from "../../webServices/user";
 import DataVerifier from "../../webServices/tools";
 
-export default function UserInfo({ formState, dispatch, setEnableStep }) {
+export default function UserInfo({ formState, dispatch, setEnableStep, handleNext }) {
   const [email, setEmail] = useState("");
   const [isValidMail, setIsValidMail] = useState(false);
   const [personal, setPersonal] = useState({ ...formState.personal });
@@ -58,9 +59,6 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
         lastName: personal.lastName === "",
         email: email === "",
       });
-      return null;
-    }
-    if (isValidMail) {
       return null;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
@@ -334,7 +332,17 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
                 </Typography>
               </Grid>
             </Grid>
-            <LoadingButton
+            {isValidMail ? (
+              <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleNext}
+            >
+              Continuar
+            </Button>
+            ):(
+              <LoadingButton
               loading={loading}
               fullWidth
               variant="contained"
@@ -343,6 +351,7 @@ export default function UserInfo({ formState, dispatch, setEnableStep }) {
             >
               Validar
             </LoadingButton>
+            )}
           </Box>
         </Box>
       </Container>
