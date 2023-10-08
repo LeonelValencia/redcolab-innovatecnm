@@ -90,7 +90,7 @@ export default function Interests() {
         />
         <TextField
           fullWidth
-          label="Descripción"
+          label="Palabras clave"
           name="description"
           id="description"
           multiline

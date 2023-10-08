@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ReactFlipCard from "reactjs-flip-card";
@@ -11,12 +11,18 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
   const [flip, setFlip] = useState(false);
   const [accept, setAccept] = useState(false);
 
-  const handleFinishTest=(testValues,isSkip)=>{
-    setValues(testValues,isSkip)
-  }
+  const handleFinishTest = (testValues, isSkip) => {
+    setValues(testValues, isSkip);
+  };
 
-  if(accept){
-    return <ApiAgents handleFinishTest={handleFinishTest} agents={agents} info={info} />
+  if (accept) {
+    return (
+      <ApiAgents
+        handleFinishTest={handleFinishTest}
+        agents={agents}
+        info={info}
+      />
+    );
   }
 
   const front = (
@@ -45,14 +51,14 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
       </div>
       <div
         style={{
-            margin: 1,
-            padding: 5,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            overflow: "auto",
-            background: "#9ADBF9",
-          }}
+          margin: 1,
+          padding: 5,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          overflow: "auto",
+          background: "#9ADBF9",
+        }}
       >
         <Button
           variant="contained"
@@ -95,7 +101,8 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
           {`Tiempo aproximado: ${info.requirement.timeMin}min - ${info.requirement.timeMax}min`}
         </Typography>
       </div>
-      <div style={{
+      <div
+        style={{
           margin: 1,
           padding: 5,
           display: "flex",
@@ -103,34 +110,35 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
           alignItems: "center",
           overflow: "auto",
           background: "#9ADBF9",
-        }}>
-      <div style={{display: 'flex'}} >
+        }}
+      >
+        <div style={{ display: "flex" }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              setFlip(!flip);
+            }}
+          >
+            {"<="}
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              setAccept(true);
+            }}
+          >
+            Continuar
+          </Button>
+        </div>
         <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            setFlip(!flip);
-          }}
-        >
-          {"<="}
-        </Button>
-        <Button
-          variant="contained"
-          color="success"
-          onClick={() => {
-            setAccept(true)
-          }}
-        >
-          Continuar
-        </Button>
-      </div>
-      <Button
-      style={{marginTop: "5px"}}
+          style={{ marginTop: "5px" }}
           variant="contained"
           size="small"
           color="warning"
           onClick={() => {
-            handleFinishTest({},true)
+            handleFinishTest({}, true);
           }}
           sx={{
             fontSize: 11,
@@ -144,6 +152,7 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
 
   return (
     <Box
+    id="testInit"
       sx={{
         marginTop: 1,
         display: "flex",

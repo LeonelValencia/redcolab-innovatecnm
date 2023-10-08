@@ -38,17 +38,18 @@ function getQuestions(agents, values = {}) {
 }
 
 export default function ApiAgents({ handleFinishTest, agents, info }) {
-  const [full, setFull] = useState(false);
-  const [values, setValues] = useState(getValues(info.skills));
+  const [init, setInt] = useState(false);
   const testID = useId();
 
-  useEffect(() => {
+  const handleFinish = (value) => {
     const elem = document.getElementById(testID);
-    if (!full && elem) {
-      //elem.requestFullscreen();
-      //setFull(true)
+    if (elem) {
+      document.exitFullscreen();
+      setTimeout(() => {
+        handleFinishTest(value);
+      }, 500);
     }
-  }, [full, testID]);
+  };
 
   return (
     <div
@@ -68,13 +69,46 @@ export default function ApiAgents({ handleFinishTest, agents, info }) {
       }}
     >
       <p>Aplicación Test</p>
-      <ShowQuestion agents={agents} handleFinishTest={handleFinishTest} values={values} setValues={setValues} />
+      {init ? (
+        <ShowQuestion agents={agents} handleFinish={handleFinish} info={info} />
+      ) : (
+        <Button
+          color="success"
+          variant="contained"
+          onClick={() => {
+            const elm = document.getElementById(testID);
+            if (elm) {
+              elm.requestFullscreen();
+            }
+            setInt(true);
+          }}
+        >
+          Continuar
+        </Button>
+      )}
     </div>
   );
 }
 
-function ShowQuestion({ agents, values, setValues, handleFinishTest }) {
+function ShowQuestion({ agents, handleFinish, info }) {
+  const [values, setValues] = useState(getValues(info.skills));
+  const pastelColors = [
+    "#FF99CC",
+    "#FF99FF",
+    "#CC99FF",
+    "#9999FF",
+    "#99CCFF",
+    "#99FFFF",
+    "#99FFCC",
+    "#99FF99",
+    "#CCFF99",
+    "#FFFF99",
+    "#FFCC99",
+  ];
   const [time] = useState(new Date());
+  const [COLOR, setColor] = useState(
+    pastelColors[Math.floor(Math.random() * pastelColors.length)]
+  );
   const [flip, setFlip] = useState(false);
   const [questions, setQuestions] = useState(getQuestions(agents, values));
   const [index, setIndex] = useState(
@@ -93,6 +127,8 @@ function ShowQuestion({ agents, values, setValues, handleFinishTest }) {
     newQuestions.splice(index, 1);
     setQuestions(newQuestions);
     setIndex(Math.floor(Math.random() * newQuestions.length));
+    setColor(pastelColors[Math.floor(Math.random() * pastelColors.length)]);
+    setFlip(!flip);
   };
 
   if (!DataVerifier.isValidArray(questions)) {
@@ -108,7 +144,7 @@ function ShowQuestion({ agents, values, setValues, handleFinishTest }) {
           color="success"
           variant="contained"
           onClick={() => {
-            handleFinishTest(values)
+            handleFinish(values);
           }}
         >
           Continuar
@@ -204,8 +240,8 @@ function ShowQuestion({ agents, values, setValues, handleFinishTest }) {
         <ReactFlipCard
           flipByProp={flip}
           flipTrigger={"disabled"}
-          frontComponent={<Card content={QuestionCard} />}
-          backComponent={<Card content={AnswerCard} />}
+          frontComponent={<Card color={COLOR} content={QuestionCard} />}
+          backComponent={<Card color={COLOR} content={AnswerCard} />}
         />
       </div>
     </>
