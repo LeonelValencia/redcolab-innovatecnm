@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useState } from "react";
+import React, {useId, useState } from "react";
 import DataVerifier from "../../../webServices/tools";
 import Card from "./card";
 import ReactFlipCard from "reactjs-flip-card";
