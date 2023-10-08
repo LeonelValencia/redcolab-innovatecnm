@@ -55,7 +55,7 @@ function Cards({ interests, formState, dispatch, setEnableStep, handleNext }) {
   const handleSelect = (color, _id, index) => {
     const newInterest = [..._interests];
     let select = [...selectInterests];
-    newInterest[index].color = color;
+    newInterest[index] = {...newInterest[index], color:color};
     if (newInterest[index].isSelect) {
       newInterest[index].isSelect = false;
       let indx = select.findIndex((s) => s === _id);
