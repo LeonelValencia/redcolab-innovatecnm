@@ -4,6 +4,11 @@
     "authors": "Rudolf H. Moss y Berenice L. Moss",
     "objective": "Evaluación de nivel de adaptabilidad social",
     "description": "Un test para detectar el nivel de adaptabilidad social. Para el desarrollo colaborativo es importante que la conozcas pues te permite saber tus capacidades de participación, supervisión, evaluación y resolución de problemas interpersonales, con la finalidad de que mejores tu desempeño al trabajar en equipo. Las limitaciones son; no aporta suficientes datos en relación a la personalidad, mide mas aspectos de sociabilidad que aspectos de la personalidad.",
+    "requirement": {
+        "comment": "Tomate tu tiempo y contesta con honestidad, este test es individual",
+        "timeMin": 15,
+        "timeMax": 45
+    },
     "skills":[
         {
             "code": "HS",

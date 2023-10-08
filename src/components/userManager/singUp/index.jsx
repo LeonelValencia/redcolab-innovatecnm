@@ -8,6 +8,7 @@ import { userSchema } from "../../webServices/user";
 import Typography from "@mui/material/Typography";
 import UserInfo from "./userInfo";
 import Interest from "./interest";
+import MossTest from "./moss";
 
 const initForm = { ...userSchema };
 
@@ -42,14 +43,13 @@ export default function SingUp() {
   const theme = useTheme();
   const [formState, dispatch] = useReducer(reducer, initForm);
   const [activeStep, setActiveStep] = useState(0);
-  const [enableStep, setEnableStep] = useState(false);
+  const [enableStep, setEnableStep] = useState(true);
 
   console.log(formState);
 
-  
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setEnableStep(false);
+    //setEnableStep(false);
   };
 
   const handleBack = () => {
@@ -69,7 +69,12 @@ export default function SingUp() {
       setEnableStep={setEnableStep}
       handleNext={handleNext}
     />,
-    "Create an ad",
+    <MossTest
+      formState={formState}
+      dispatch={dispatch}
+      setEnableStep={setEnableStep}
+      handleNext={handleNext}
+    />,
   ];
 
   return (
