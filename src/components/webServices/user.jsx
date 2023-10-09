@@ -45,22 +45,47 @@ export const useValidateEmail = (email) => {
 };
 
 export function useNewUserService() {
-  const [setMutation, {loading,data,error}] = useMutation(mutation_InsertOneUser);
+  const [setMutation, { loading, data, error }] = useMutation(
+    mutation_InsertOneUser
+  );
   const insertNewUser = ({
     user,
     onCompleted = () => {},
     onError = () => {},
-  })=>{
+  }) => {
     setMutation({
-      variables:{
-        data: user
+      variables: {
+        data: user,
       },
       onCompleted: onCompleted,
-      onError: onError
-    })
-  }
-  return [insertNewUser,{loading,data,error}]
+      onError: onError,
+    });
+  };
+  return [insertNewUser, { loading, data, error }];
 }
+
+export const academicSchema = {
+  dateEnd: null,
+  dateStart: null,
+  degree: {
+    key: "",
+    description: "",
+    name: "",
+  },
+  description: "",
+  schoolName: "",
+  schoolId: "",
+  studyStatus: {
+    course: {
+      code: "",
+      description: "",
+      name: "",
+      specialty: "",
+    },
+    currentSemester: 0,
+    studentId: "",
+  },
+};
 
 export const userSchema = {
   academic: [],
@@ -80,7 +105,7 @@ export const userSchema = {
     name: "",
   },
   publicToken: "",
-  skills:{
+  skills: {
     collaboration: [],
     soft: [],
     technical: [],
@@ -100,6 +125,7 @@ export const userSchemaComplete = {
         },
         description: "",
         schoolName: "",
+        schoolId: "",
         studyStatus: {
           course: {
             description: "",

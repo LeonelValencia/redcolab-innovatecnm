@@ -12,6 +12,7 @@ export default function MossTest({
   const handleResultTest = (testValues,isSkip=false)=>{
     if (isSkip) {
       handleNext()
+      return null
     }
     if(testValues){
       let soft = []

@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import UserInfo from "./userInfo";
 import Interest from "./interest";
 import MossTest from "./moss";
+import Academic from "./academic";
 
 const initForm = { ...userSchema };
 
@@ -57,7 +58,7 @@ export default function SingUp() {
   };
 
   const steps = [
-    <MossTest
+    <Academic
       formState={formState}
       dispatch={dispatch}
       setEnableStep={setEnableStep}
@@ -75,7 +76,12 @@ export default function SingUp() {
       setEnableStep={setEnableStep}
       handleNext={handleNext}
     />,
-    
+    <MossTest
+      formState={formState}
+      dispatch={dispatch}
+      setEnableStep={setEnableStep}
+      handleNext={handleNext}
+    />,
   ];
 
   return (
