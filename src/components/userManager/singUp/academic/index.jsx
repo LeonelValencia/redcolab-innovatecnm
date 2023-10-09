@@ -26,14 +26,13 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function Academic() {
-  const [isStudent, setIsStudent] = useState(false);
   const [isOtherSchool, setIsOtherSchool] = useState(false);
   const [endDate, setEndDate] = useState(false);
   const [getSchoolsByDegree, { schools, loading }] = useGetSchoolsByDegree();
   const [form, setForm] = useState({ ...academicSchema });
   const [inputsInvalid, setInputsInvalid] = useState({});
   let schoolSet;
-  if (DataVerifier.isValidString(form.schoolId)) {
+  if (DataVerifier.isValidString(form.schoolId) && DataVerifier.isValidArray(schools)) {
     schoolSet = schools.find((s) => s._id === form.schoolId);
   }
 
@@ -70,17 +69,10 @@ export default function Academic() {
               value={form.degree.key}
               label="Nivel de Estudio"
               onChange={(event) => {
-                setInputsInvalid({
-                  ...inputsInvalid,
-                  degreeNAme: false,
-                });
-                const { name, description } = DEGREES[event.target.value];
                 setForm({
                   ...form,
                   degree: {
-                    key: event.target.value,
-                    name: name,
-                    description: description,
+                    key: event.target.value
                   },
                 });
                 getSchoolsByDegree({ degreeKey: event.target.value });
@@ -212,7 +204,7 @@ export default function Academic() {
           </Grid>
           {form.degree.key === "superior" && (
             <>
-              <Grid item xs={12} sm={12}>
+              <Grid item xs={12} sm={9}>
                 <InputLabel>
                   Numero de Control, Matricula o id de estudiante
                 </InputLabel>
@@ -234,7 +226,33 @@ export default function Academic() {
                   }}
                 />
               </Grid>
-              {schoolSet && <SuperiorForm form={form} setForm={setForm} schoolSet={schoolSet} />}
+              <Grid item xs={12} sm={3}>
+                {!endDate &&(
+                  <><InputLabel>
+                  semestre
+                </InputLabel>
+                <TextField
+                  required
+                  fullWidth
+                  id="currentSemester"
+                  type="number"
+                  label="semestre"
+                  name="semestre"
+                  value={form.studyStatus.currentSemester}
+                  error={inputsInvalid?.currentSemester}
+                  onChange={(event) => {
+                    setInputsInvalid({
+                      ...inputsInvalid,
+                      currentSemester: false,
+                    });
+                    //event.target.value
+                    setForm({ ...form, studyStatus: {...form.studyStatus, currentSemester: event.target.value}});
+                  }}
+                />
+              </>
+                )}
+                </Grid>
+              {schoolSet && <SuperiorForm form={form} setForm={setForm} schoolSet={schoolSet} endDate={endDate} />}
             </>
           )}
         </Grid>
