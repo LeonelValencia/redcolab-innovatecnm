@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import ReactFlipCard from "reactjs-flip-card";
+//import ReactFlipCard from "reactjs-flip-card";
 import Button from "@mui/material/Button";
 import Card from "./card";
 import "./testForm.css";
-import ApiAgents from "./apiAgents";
+//import ApiAgents from "./apiAgents";
+import { CSSTransition } from "react-transition-group";
 
 export default function TestForm({ name = "Test", info, agents, setValues }) {
   const [flip, setFlip] = useState(false);
   const [accept, setAccept] = useState(false);
+  const nodeRef = useRef(null);
 
   const handleFinishTest = (testValues, isSkip) => {
     setValues(testValues, isSkip);
   };
-
+  /*
   if (accept) {
     return (
       <ApiAgents
@@ -24,7 +26,7 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
       />
     );
   }
-
+*/
   const front = (
     <div>
       <div>
@@ -152,7 +154,7 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
 
   return (
     <Box
-    id="testInit"
+      id="testInit"
       sx={{
         marginTop: 1,
         display: "flex",
@@ -163,14 +165,45 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
       <Typography component="h1" variant="h5">
         {name}
       </Typography>
-      <div style={{ width: "350px", height: "560px" }}>
-        <ReactFlipCard
-          flipByProp={flip}
-          flipTrigger={"disabled"}
-          frontComponent={<Card content={front} />}
-          backComponent={<Card content={back} />}
-        />
+      <buttom />
+      <div>
+        <CSSTransition
+        in={flip}
+        nodeRef={nodeRef}
+        timeout={300}
+        classNames="cardBack"
+        unmountOnExit
+        >
+          <div ref={nodeRef} >
+            <Card  content={back} />
+          </div>
+        </CSSTransition>
+
       </div>
     </Box>
   );
 }
+
+/*
+        <CSSTransition
+        in={!flip}
+        nodeRef={nodeRef}
+        timeout={300}
+        classNames="cardFront"
+        unmountOnExit
+        >
+          <div ref={nodeRef} >
+            <Card  content={front} />
+          </div>
+        </CSSTransition>
+
+
+      <div style={{ width: "350px", height: "560px" }}>
+        <ReactFlipCard
+          flipByProp={flip}
+          flipTrigger={"disabled"}
+          frontComponent={}
+          backComponent={}
+        />
+      </div>
+*/

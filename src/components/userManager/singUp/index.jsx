@@ -57,6 +57,12 @@ export default function SingUp() {
   };
 
   const steps = [
+    <MossTest
+      formState={formState}
+      dispatch={dispatch}
+      setEnableStep={setEnableStep}
+      handleNext={handleNext}
+    />,
     <UserInfo
       formState={formState}
       dispatch={dispatch}
@@ -69,12 +75,7 @@ export default function SingUp() {
       setEnableStep={setEnableStep}
       handleNext={handleNext}
     />,
-    <MossTest
-      formState={formState}
-      dispatch={dispatch}
-      setEnableStep={setEnableStep}
-      handleNext={handleNext}
-    />,
+    
   ];
 
   return (
