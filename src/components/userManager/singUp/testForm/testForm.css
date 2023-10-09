@@ -1,22 +1,22 @@
-.cardFront-enter .cardBack-enter {
-  transition: transform 0.8s;
+.flip-enter {
   transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden; /* Safari */
-  backface-visibility: hidden;
+  transform: rotateY(90deg);
+}
+.flip-enter-active {
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 500ms ease-in-out;
+}
+.flip-exit {
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+}
+.flip-exit-active {
+  transform-style: preserve-3d;
+  transform: rotateY(90deg);
+  transition: transform 500ms ease-in-out;
 }
 
-.cardFront-enter-active .cardBack-enter-active {
-  transform: rotateY(180deg);
-  transition: transform 500ms;
+.testCard {
+  transform-style: preserve-3d;
 }
-
-.cardFront-exit .cardBack-exit  {
-  opacity: 1;
-}
-
-.cardFront-exit-active .cardBack-exit-active {
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 300ms, transform 300ms;
-}
-
