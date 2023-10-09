@@ -1,11 +1,10 @@
 import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-//import ReactFlipCard from "reactjs-flip-card";
 import Button from "@mui/material/Button";
 import Card from "./card";
 import "./testForm.css";
-//import ApiAgents from "./apiAgents";
+import ApiAgents from "./apiAgents";
 import { CSSTransition } from "react-transition-group";
 
 export default function TestForm({ name = "Test", info, agents, setValues }) {
@@ -33,7 +32,7 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
       }, 500);
     }
   };
-  /*
+  
   if (accept) {
     return (
       <ApiAgents
@@ -43,7 +42,7 @@ export default function TestForm({ name = "Test", info, agents, setValues }) {
       />
     );
   }
-*/
+
   const front = (
     <div>
       <div>

@@ -1,9 +1,9 @@
-import React, {useId, useState } from "react";
+import React, {useId, useRef, useState } from "react";
 import DataVerifier from "../../../webServices/tools";
 import Card from "./card";
-import ReactFlipCard from "reactjs-flip-card";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { CSSTransition } from "react-transition-group";
 
 function getValues(skills = []) {
   let _values = {};
@@ -109,11 +109,29 @@ function ShowQuestion({ agents, handleFinish, info }) {
   const [COLOR, setColor] = useState(
     pastelColors[Math.floor(Math.random() * pastelColors.length)]
   );
-  const [flip, setFlip] = useState(false);
+  const [cardFront, setCardFront] = useState(true);
+  const [cardBack, setCardBack] = useState(false);
   const [questions, setQuestions] = useState(getQuestions(agents, values));
   const [index, setIndex] = useState(
     Math.floor(Math.random() * questions.length)
   );
+  
+  const nodeRef = useRef(null);
+  const nodeRef2 = useRef(null);
+
+  const handleFlip = () => {
+    if (cardFront) {
+      setCardFront(false);
+      setTimeout(() => {
+        setCardBack(true);
+      }, 500);
+    } else {
+      setCardBack(false);
+      setTimeout(() => {
+        setCardFront(true);
+      }, 500);
+    }
+  };
 
   const handleAnswer = (_id) => {
     const code = question.code;
@@ -128,7 +146,7 @@ function ShowQuestion({ agents, handleFinish, info }) {
     setQuestions(newQuestions);
     setIndex(Math.floor(Math.random() * newQuestions.length));
     setColor(pastelColors[Math.floor(Math.random() * pastelColors.length)]);
-    setFlip(!flip);
+    handleFlip()
   };
 
   if (!DataVerifier.isValidArray(questions)) {
@@ -175,7 +193,7 @@ function ShowQuestion({ agents, handleFinish, info }) {
       <Button
         variant="contained"
         onClick={() => {
-          setFlip(!flip);
+          handleFlip()
         }}
       >
         Continuar
@@ -188,9 +206,7 @@ function ShowQuestion({ agents, handleFinish, info }) {
       <Button
         size="small"
         variant="contained"
-        onClick={() => {
-          setFlip(!flip);
-        }}
+        onClick={handleFlip}
       >
         Regresar
       </Button>
@@ -226,7 +242,7 @@ function ShowQuestion({ agents, handleFinish, info }) {
 
   return (
     <>
-      {flip ? (
+      {cardFront ? (
         <p>
           <b>Seleccione una respuesta</b>
         </p>
@@ -235,15 +251,30 @@ function ShowQuestion({ agents, handleFinish, info }) {
           <b>Lea con cuidado</b>
         </p>
       )}
-
       <div style={{ width: "350px", height: "560px" }}>
-        <ReactFlipCard
-          flipByProp={flip}
-          flipTrigger={"disabled"}
-          frontComponent={<Card color={COLOR} content={QuestionCard} />}
-          backComponent={<Card color={COLOR} content={AnswerCard} />}
-        />
-      </div>
+          <CSSTransition
+            in={cardFront}
+            nodeRef={nodeRef}
+            timeout={500}
+            classNames="flip"
+            unmountOnExit
+          >
+            <div ref={nodeRef} className="testCard">
+            <Card color={COLOR} content={QuestionCard} />
+            </div>
+          </CSSTransition>
+          <CSSTransition
+            in={cardBack}
+            nodeRef={nodeRef2}
+            timeout={500}
+            classNames="flip"
+            unmountOnExit
+          >
+            <div ref={nodeRef2} className="testCard">
+            <Card color={COLOR} content={AnswerCard} />
+            </div>
+          </CSSTransition>
+        </div>
     </>
   );
 }
