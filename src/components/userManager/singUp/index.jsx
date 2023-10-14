@@ -21,6 +21,8 @@ const reducer = (state, action) => {
         contact: { ...state.contact, email: action.contact.email },
         personal: action.personal,
       };
+    case "setAcademic":
+      return { ...state, academic: [...state.academic, action.academic] };
     case "setInterest":
       return { ...state, interest: action.interest };
     case "setSoftSkills":
@@ -58,13 +60,13 @@ export default function SingUp() {
   };
 
   const steps = [
-    <Academic
+    <UserInfo
       formState={formState}
       dispatch={dispatch}
       setEnableStep={setEnableStep}
       handleNext={handleNext}
     />,
-    <UserInfo
+    <Academic
       formState={formState}
       dispatch={dispatch}
       setEnableStep={setEnableStep}
