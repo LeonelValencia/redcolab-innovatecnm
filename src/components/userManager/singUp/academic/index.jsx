@@ -20,7 +20,7 @@ import { academicSchema } from "../../../webServices/user";
 import DataVerifier from "../../../webServices/tools";
 import { DEGREES, useGetSchoolsByDegree } from "../../../webServices/academic";
 import SuperiorForm from "./superiorForm";
-import SelectAcademicInfo from "./selectAcademicInfo";
+//import SelectAcademicInfo from "./selectAcademicInfo";
 
 /*
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -33,7 +33,7 @@ export default function Academic({
   setEnableStep,
   handleNext,
 }) {
-  const [indexAcademic, setIndexAcademic] = useState(
+  const [indexAcademic, /*setIndexAcademic*/] = useState(
     formState.academic.length === 1 ? 0 : undefined
   );
   let schema = academicSchema;
