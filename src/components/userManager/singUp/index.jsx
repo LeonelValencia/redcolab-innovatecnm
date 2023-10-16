@@ -10,6 +10,7 @@ import UserInfo from "./userInfo";
 import Interest from "./interest";
 import MossTest from "./moss";
 import Academic from "./academic";
+import Save from "./save";
 
 const initForm = { ...userSchema };
 
@@ -48,8 +49,6 @@ export default function SingUp() {
   const [activeStep, setActiveStep] = useState(0);
   const [enableStep, setEnableStep] = useState(true);
 
-  console.log(formState);
-
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     //setEnableStep(false);
@@ -60,6 +59,12 @@ export default function SingUp() {
   };
 
   const steps = [
+    <Save
+    formState={formState}
+    dispatch={dispatch}
+    setEnableStep={setEnableStep}
+    handleNext={handleNext}
+  />,
     <UserInfo
       formState={formState}
       dispatch={dispatch}
@@ -83,7 +88,8 @@ export default function SingUp() {
       dispatch={dispatch}
       setEnableStep={setEnableStep}
       handleNext={handleNext}
-    />,
+    />
+    
   ];
 
   return (
@@ -91,12 +97,12 @@ export default function SingUp() {
       {steps[activeStep]}
       <Copyright sx={{ mt: 5 }} />
       <MobileStepper
-        steps={5}
+        steps={steps.length}
         position="bottom"
         activeStep={activeStep}
         sx={{ width: "100%", flexGrow: 1 }}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={!enableStep}>
+          <Button size="small" onClick={handleNext} disabled={activeStep === steps.length-1}>
             Next
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
