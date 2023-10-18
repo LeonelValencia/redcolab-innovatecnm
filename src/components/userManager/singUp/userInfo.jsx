@@ -15,7 +15,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 //import md5 from "md5";
 import { useValidateEmail } from "../../webServices/user";
-import DataVerifier from "../../webServices/tools";
 
 export default function UserInfo({ formState, dispatch, setEnableStep, handleNext }) {
   const [email, setEmail] = useState("");
@@ -74,8 +73,9 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
       validateEmail({
         email: email,
         onCompleted: (data = {}) => {
+          console.log(data)
           if (data.hasOwnProperty("user")) {
-            if (!DataVerifier.isValidArray(data.user)) {
+            if (data.user === null) {
               showSnackbar("success", "Todo se ve Genial, Continua. 🥳🥳🥳");
               setEnableStep(true);
               setIsValidMail(true);

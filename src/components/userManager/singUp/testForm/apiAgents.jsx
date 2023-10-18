@@ -1,4 +1,4 @@
-import React, {useId, useRef, useState } from "react";
+import React, { useId, useRef, useState } from "react";
 import DataVerifier from "../../../webServices/tools";
 import Card from "./card";
 import Typography from "@mui/material/Typography";
@@ -115,7 +115,7 @@ function ShowQuestion({ agents, handleFinish, info }) {
   const [index, setIndex] = useState(
     Math.floor(Math.random() * questions.length)
   );
-  
+
   const nodeRef = useRef(null);
   const nodeRef2 = useRef(null);
 
@@ -141,12 +141,14 @@ function ShowQuestion({ agents, handleFinish, info }) {
       result[code] = values[code] + question.score;
       setValues({ ...values, ...result });
     }
-    let newQuestions = [...questions];
-    newQuestions.splice(index, 1);
-    setQuestions(newQuestions);
-    setIndex(Math.floor(Math.random() * newQuestions.length));
-    setColor(pastelColors[Math.floor(Math.random() * pastelColors.length)]);
-    handleFlip()
+    setTimeout(() => {
+      let newQuestions = [...questions];
+      newQuestions.splice(index, 1);
+      setQuestions(newQuestions);
+      setIndex(Math.floor(Math.random() * newQuestions.length));
+      setColor(pastelColors[Math.floor(Math.random() * pastelColors.length)]);
+    }, 500);
+    handleFlip();
   };
 
   if (!DataVerifier.isValidArray(questions)) {
@@ -193,7 +195,7 @@ function ShowQuestion({ agents, handleFinish, info }) {
       <Button
         variant="contained"
         onClick={() => {
-          handleFlip()
+          handleFlip();
         }}
       >
         Continuar
@@ -203,11 +205,7 @@ function ShowQuestion({ agents, handleFinish, info }) {
 
   const AnswerCard = (
     <div>
-      <Button
-        size="small"
-        variant="contained"
-        onClick={handleFlip}
-      >
+      <Button size="small" variant="contained" onClick={handleFlip}>
         Regresar
       </Button>
       <p style={{ fontSize: "10px" }}>{question.question}</p>
@@ -252,29 +250,29 @@ function ShowQuestion({ agents, handleFinish, info }) {
         </p>
       )}
       <div style={{ width: "350px", height: "560px" }}>
-          <CSSTransition
-            in={cardFront}
-            nodeRef={nodeRef}
-            timeout={500}
-            classNames="flip"
-            unmountOnExit
-          >
-            <div ref={nodeRef} className="testCard">
+        <CSSTransition
+          in={cardFront}
+          nodeRef={nodeRef}
+          timeout={500}
+          classNames="flip"
+          unmountOnExit
+        >
+          <div ref={nodeRef} className="testCard">
             <Card color={COLOR} content={QuestionCard} />
-            </div>
-          </CSSTransition>
-          <CSSTransition
-            in={cardBack}
-            nodeRef={nodeRef2}
-            timeout={500}
-            classNames="flip"
-            unmountOnExit
-          >
-            <div ref={nodeRef2} className="testCard">
+          </div>
+        </CSSTransition>
+        <CSSTransition
+          in={cardBack}
+          nodeRef={nodeRef2}
+          timeout={500}
+          classNames="flip"
+          unmountOnExit
+        >
+          <div ref={nodeRef2} className="testCard">
             <Card color={COLOR} content={AnswerCard} />
-            </div>
-          </CSSTransition>
-        </div>
+          </div>
+        </CSSTransition>
+      </div>
     </>
   );
 }

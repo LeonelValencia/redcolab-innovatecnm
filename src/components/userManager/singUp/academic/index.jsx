@@ -33,12 +33,14 @@ export default function Academic({
   setEnableStep,
   handleNext,
 }) {
-  const [indexAcademic, /*setIndexAcademic*/] = useState(
+  /*
+  const [indexAcademic, setIndexAcademic] = useState(
     formState.academic.length === 1 ? 0 : undefined
   );
+  */
   let schema = academicSchema;
-  if (DataVerifier.isValidArray(formState.academic) && indexAcademic) {
-    schema = formState.academic[indexAcademic];
+  if (DataVerifier.isValidArray(formState.academic)) {
+    schema = formState.academic[0];
   }
   const [form, setForm] = useState({ ...schema });
 
@@ -46,6 +48,7 @@ export default function Academic({
   const [inputsInvalid, setInputsInvalid] = useState({});
   const [isOtherSchool, setIsOtherSchool] = useState(false);
   const [getSchoolsByDegree, { schools, loading }] = useGetSchoolsByDegree();
+
 
   let schoolSet;
   if (
@@ -63,7 +66,9 @@ export default function Academic({
   */
 
   const handleSetInfo =()=>{
+    //console.log(form);
     dispatch({type: "setAcademic", academic: form})
+    setEnableStep(true);
     handleNext()
   }
 
@@ -113,7 +118,9 @@ export default function Academic({
               ))}
             </Select>
             <Typography component="p" variant="body2">
-              {form.degree.description}
+              {DataVerifier.isValidObject(DEGREES[form.degree.key]) && (
+                DEGREES[form.degree.key].description
+              )}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -132,7 +139,7 @@ export default function Academic({
                 <DatePickerValue
                   label="Fin"
                   setTime={(value) => {
-                    setForm({ ...form, dateStart: value.$d });
+                    setForm({ ...form, dateEnd: value.$d });
                   }}
                 />
                 <Button

@@ -23,7 +23,7 @@ const reducer = (state, action) => {
         personal: action.personal,
       };
     case "setAcademic":
-      return { ...state, academic: [...state.academic, action.academic] };
+      return { ...state, academic: [action.academic] };
     case "setInterest":
       return { ...state, interest: action.interest };
     case "setSoftSkills":
@@ -47,24 +47,20 @@ export default function SingUp() {
   const theme = useTheme();
   const [formState, dispatch] = useReducer(reducer, initForm);
   const [activeStep, setActiveStep] = useState(0);
-  const [enableStep, setEnableStep] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [enableStep, setEnableStep] = useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //setEnableStep(false);
+    setEnableStep(false);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  console.log("formSatet",formState);
 
   const steps = [
-    <Save
-    formState={formState}
-    dispatch={dispatch}
-    setEnableStep={setEnableStep}
-    handleNext={handleNext}
-  />,
     <UserInfo
       formState={formState}
       dispatch={dispatch}
@@ -88,8 +84,8 @@ export default function SingUp() {
       dispatch={dispatch}
       setEnableStep={setEnableStep}
       handleNext={handleNext}
-    />
-    
+    />,
+    <Save formState={formState} />,
   ];
 
   return (
@@ -102,7 +98,11 @@ export default function SingUp() {
         activeStep={activeStep}
         sx={{ width: "100%", flexGrow: 1 }}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === steps.length-1}>
+          <Button
+            size="small"
+            onClick={handleNext}
+            disabled={activeStep === steps.length - 1 || !enableStep}
+          >
             Next
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
