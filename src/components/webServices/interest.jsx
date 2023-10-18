@@ -28,7 +28,7 @@ const mutation_insertOneInterest = gql`
 
 export function useGetInterests() {
   const { data, loading, error } = useQuery(query_getInterest);
-  console.log(error);
+  //console.log(error);
   let interests;
   if (data) {
     if (data.hasOwnProperty("interests")) {

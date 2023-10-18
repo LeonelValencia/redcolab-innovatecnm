@@ -15,7 +15,6 @@ export { INTEREST_TOPICS };
 
 export default function Interest(props) {
   const { interests, loading } = useGetInterests();
-
   if (loading) {
     return <CircularSpinner />;
   }
@@ -131,17 +130,17 @@ function Cards({ interests, formState, dispatch, setEnableStep, handleNext }) {
             );
           })}
           {_interests.map((interest, i) => {
-            const topic = INTEREST_TOPICS[interest.area];
+            //console.log(interest.color);
             const color = interest?.color
               ? interest.color
-              : getRandomColor(topic.colors);
+              : getRandomColor(INTEREST_TOPICS[interest.area].colors);
             const isSelect = selectInterests.find((id) => id === interest._id)
               ? true
               : false;
             const styleSelect = isSelect
               ? {
-                  background: `radial-gradient(circle, #FFFFFF 10%, ${topic.color} 100%)`,
-                  border: `3px solid ${topic.color}`,
+                  background: `radial-gradient(circle, #FFFFFF 10%, ${color} 100%)`,
+                  border: `3px solid ${color}`,
                 }
               : {
                   background: `#ffffff`,
