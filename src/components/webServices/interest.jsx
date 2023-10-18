@@ -35,26 +35,36 @@ export function useGetInterests() {
   return { interests, loading, error };
 }
 
-export function useInsertInterests(){
-  const [setMutation, {loading,data,error}] = useMutation(mutation_insertOneInterest);
+export function useInsertInterests() {
+  const [setMutation, { loading, data, error }] = useMutation(
+    mutation_insertOneInterest
+  );
   const insertNewInterest = ({
     interest,
     onCompleted = () => {},
     onError = () => {},
-  })=>{
+  }) => {
     setMutation({
-      variables:{
-        data: interest
+      variables: {
+        data: interest,
       },
       onCompleted: onCompleted,
-      onError: onError
-    })
-  }
-  return [insertNewInterest,{loading,data,error}]
+      onError: onError,
+    });
+  };
+  return [insertNewInterest, { loading, data, error }];
 }
 
 export const INTEREST_SCHEMA = {
   area: "",
   concept: "",
-  description: "",
+  color: "",
+  keywords: [],
+  vector: {},
+};
+
+export const VECTOR_SCHEMA = {
+  formal: 0,
+  nature: 0,
+  social: 0,
 };

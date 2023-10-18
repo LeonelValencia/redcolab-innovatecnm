@@ -1,20 +1,23 @@
 {
     "cienciasSociales":{
+        "key": "social",
         "color": "#FF0000",
         "colors": ["#FF0099","#FF2D00","#FF0000","#E300FF","#FF5900"],
         "label": "Ciencias Sociales",
         "score": "FF00000"
     },
     "cienciasNaturales":{
+        "key": "nature",
         "color": "#00FF00",
         "colors": ["#6BFF00", "#00FF57", "#00FF00", "#D5FF00", "#00FFAD"],
         "label": "Ciencias Naturales",
         "score": "00FF00"
     },
-    "cienciasExactas":{
+    "cienciasFormales":{
+        "key": "formal",
         "color": "#0000FF",
         "colors": ["#BF8578","#733B36","#260A03","#A69B7C","#A6263E"],
-        "label": "Ciencias Exactas",
+        "label": "Ciencias Formales",
         "score": "0000FF"       
     }
 }
