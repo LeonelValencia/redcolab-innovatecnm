@@ -58,7 +58,7 @@ export default function SingUp() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-  console.log("formSatet",formState);
+  //console.log("formSatet",formState);
 
   const steps = [
     <UserInfo
