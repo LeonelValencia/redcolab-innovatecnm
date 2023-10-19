@@ -16,6 +16,7 @@ const ExplosiveButton = ({ formState }) => {
     width: isPressed ? "100%" : "100px",
     height: isPressed ? "100%" : "100px",
     transform: isPressed ? "scale(5)" : "scale(1)",
+    backgroundColor: isPressed ? formState.uiConf.color : "#2c41ff",
     config: { duration: 1000 },
   });
 
@@ -66,53 +67,3 @@ export default function Save({ formState }) {
   );
 }
 
-const insertSchema = () => {
-  return `{
-    "data": {
-      "academic": [
-        {
-          "dateEnd": null,
-          "dateStart": null,
-          "degree": {
-            "description": null,
-            "key": null,
-            "name": null
-          },
-          "description": null,
-          "schoolId": null,
-          "schoolName": null,
-          "studyStatus": {
-            "course": {
-              "code": null,
-              "description": null,
-              "name": null,
-              "specialty": null
-            },
-            "currentSemester": null,
-            "studentId": null
-          }
-        }
-      ],
-      "contact": {
-        "email": null
-      },
-      "interest": null,
-      "personal": {
-        "address": null,
-        "gender": null,
-        "lastName": null,
-        "name": null,
-        "number": null
-      },
-      "skills": {
-        "soft": [
-          {
-            "description": null,
-            "name": null,
-            "score": null
-          }
-        ]
-      }
-    }
-  }`;
-};

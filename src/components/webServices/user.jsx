@@ -97,7 +97,7 @@ export const userSchema = {
   password: "",
   personal: {
     address: "",
-    age: -1,
+    age: null,
     dateBirth: null,
     gender: "",
     lastName: "",
@@ -109,9 +109,19 @@ export const userSchema = {
     collaboration: [],
     soft: [],
     technical: [],
+    trendInterest: [],
   },
   interest: [],
+  uiConf:{
+    color: "#999999"
+  }
 };
+
+export const trendInterestVectorSchema = {
+  formal: 0,
+  nature: 0,
+  social: 0
+}
 
 export const userSchemaComplete = {
   data: {

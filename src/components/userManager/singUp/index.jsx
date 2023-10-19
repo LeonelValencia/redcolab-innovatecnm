@@ -25,7 +25,12 @@ const reducer = (state, action) => {
     case "setAcademic":
       return { ...state, academic: [action.academic] };
     case "setInterest":
-      return { ...state, interest: action.interest };
+      return {
+        ...state,
+        interest: action.interest,
+        uiConf: { color: action.color },
+        skills: { ...state.skills, trendInterest: action.trendInterest },
+      };
     case "setSoftSkills":
       return { ...state, skills: { ...state.skills, soft: action.soft } };
     case "setCollaborationSkills":
@@ -58,9 +63,10 @@ export default function SingUp() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-  //console.log("formSatet",formState);
+  console.log("formSatet", formState);
 
   const steps = [
+    
     <UserInfo
       formState={formState}
       dispatch={dispatch}

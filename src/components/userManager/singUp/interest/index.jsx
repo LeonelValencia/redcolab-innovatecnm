@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useGetInterests } from "../../../webServices/interest";
+import { trendInterestVectorSchema } from "../../../webServices/user";
 import CircularSpinner from "../../../spinners";
 import DataVerifier from "../../../webServices/tools";
 import INTEREST_TOPICS from "./topics.json";
@@ -15,19 +16,32 @@ export { INTEREST_TOPICS };
 
 export default function Interest(props) {
   const { interests, loading } = useGetInterests();
+
   if (loading) {
     return <CircularSpinner />;
   }
-  return (
-    <Box
-      component="main"
-      sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-    >
-      {DataVerifier.isValidArray(interests) && (
-        <Cards interests={interests} {...props} />
-      )}
-    </Box>
-  );
+  if (DataVerifier.isValidArray(interests)) {
+    let _interests = interests.map((interest) => {
+      let activeInterest = { ...interest };
+      if (props.formState.interest.find((id) => id === interest._id)) { 
+        activeInterest["isSelect"] = true;
+      }else{
+        activeInterest["isSelect"] = false;
+      }
+      
+      return activeInterest;
+    });
+    return (
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+      >
+        <Cards interests={_interests} {...props} />
+      </Box>
+    );
+  }
+
+  return <></>;
 }
 
 const getRandomColor = (colors) => {
@@ -35,42 +49,68 @@ const getRandomColor = (colors) => {
   return colors[indiceAleatorio];
 };
 
+function getTrendInterest(interests = []) {
+  let formal = 0;
+  let nature = 0;
+  let social = 0;
+  let color = "#999999"
+  let vector = {...trendInterestVectorSchema }
+
+  // Sumar de vector
+  for (const interest of interests) {
+    formal += interest.vector.formal;
+    social += interest.vector.social;
+    nature += interest.vector.nature;
+  }
+  // Promediar vector
+  const numInterests = interests.length;
+  vector = {
+    nature: Math.round(nature / numInterests),
+    formal: Math.round(formal / numInterests),
+    social: Math.round(social / numInterests),
+  };
+  //GenerarColor
+  color = `#${vector.social.toString(16)}${vector.nature.toString(16)}${vector.formal.toString(16)}`
+  
+  return {color, vector}
+}
+
 function Cards({ interests, formState, dispatch, setEnableStep, handleNext }) {
   const [_interests, set_interests] = useState(interests);
-  const [selectInterests, setSelectInterests] = useState([
-    ...formState.interest,
-  ]);
-  const [selectTopics, setTopic] = useState({ ...INTEREST_TOPICS });
+  const [count, setCount] = useState(formState.interest.length)
 
   const handleSetInterest = () => {
+    let interestIds = []
+    let selectedInterests = []
+    _interests.forEach(interest => {
+      if(interest.isSelect){
+        interestIds.push(interest._id)
+        selectedInterests.push(interest)
+      }
+    });
+    const {color, vector} = getTrendInterest(selectedInterests)
     dispatch({
       type: "setInterest",
-      interest: selectInterests,
+      interest: interestIds,
+      trendInterest: vector,
+      color: color
     });
     setEnableStep(true);
     handleNext();
   };
 
-  const handleSelect = (color, _id, index) => {
+  const handleSelect = (color, index) => {
     const newInterest = [..._interests];
-    let select = [...selectInterests];
-    newInterest[index] = {...newInterest[index], color:color};
-    if (newInterest[index].isSelect) {
-      newInterest[index].isSelect = false;
-      let indx = select.findIndex((s) => s === _id);
-      select.splice(indx, 1);
-    } else {
-      newInterest[index].isSelect = true;
-      select.push(_id);
+    if (!newInterest[index]?.color) {
+      newInterest[index] = { ...newInterest[index], color: color };
     }
-    setSelectInterests(select);
+    newInterest[index].isSelect = !newInterest[index].isSelect;
+    if (newInterest[index].isSelect) {
+      setCount(count+1)
+    }else{
+      setCount(count-1)
+    }
     set_interests(newInterest);
-  };
-
-  const handleTopicSelect = (key) => {
-    const newsTopic = { ...selectTopics };
-    newsTopic[key].isSelect = newsTopic[key].isSelect ? false : true;
-    setTopic({ ...newsTopic });
   };
 
   return (
@@ -90,54 +130,25 @@ function Cards({ interests, formState, dispatch, setEnableStep, handleNext }) {
         <Button
           fullWidth
           variant="contained"
-          disabled={selectInterests.length < 1}
+          disabled={count < 5}
           onClick={handleSetInterest}
         >
           Continuar
         </Button>
       </div>
       <Container sx={{ py: 4 }} maxWidth="md">
-        {/* End hero unit backgroundColor: "#FF5522" */}
         <Stack
           spacing={{ xs: 1, sm: 2 }}
           direction="row"
           useFlexGap
           flexWrap="wrap"
         >
-          {Object.keys(selectTopics).map((key, i) => {
-            const topic = selectTopics[key];
-            const styleSelect = topic.isSelect
-              ? {
-                  background: `radial-gradient(circle, #FFFFFF 10%, ${topic.color} 100%)`,
-                  border: `3px solid ${topic.color}`,
-                }
-              : {
-                  background: `#ffffff`,
-                  border: `1px solid #000000`,
-                };
-            return (
-              <Chip
-                label={topic.label}
-                key={"topic_" + key}
-                sx={{
-                  ...styleSelect,
-                }}
-                className="interestCard"
-                onClick={() => {
-                  handleTopicSelect(key);
-                }}
-              />
-            );
-          })}
           {_interests.map((interest, i) => {
-            //console.log(interest.color);
+            //console.log(interest.vector);
             const color = interest?.color
               ? interest.color
               : getRandomColor(INTEREST_TOPICS[interest.area].colors);
-            const isSelect = selectInterests.find((id) => id === interest._id)
-              ? true
-              : false;
-            const styleSelect = isSelect
+            const styleSelect = interest.isSelect
               ? {
                   background: `radial-gradient(circle, #FFFFFF 10%, ${color} 100%)`,
                   border: `3px solid ${color}`,
@@ -155,7 +166,7 @@ function Cards({ interests, formState, dispatch, setEnableStep, handleNext }) {
                 }}
                 className="interestCard"
                 onClick={() => {
-                  handleSelect(color, interest._id, i);
+                  handleSelect(color, i);
                 }}
               />
             );

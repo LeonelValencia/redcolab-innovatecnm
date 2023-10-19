@@ -7,7 +7,6 @@
 }
 
 .explosive-button {
-  background-color: #2c41ff;
   border: none;
   border-radius: 50%;
   width: 100px;
@@ -18,7 +17,6 @@
 }
 
 .explosive-button.pressed {
-  background-color: #74ff58;
   color: #ffffff;
   transform: scale(1.2);
 }
