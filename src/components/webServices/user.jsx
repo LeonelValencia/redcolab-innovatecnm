@@ -1,4 +1,5 @@
-import { gql, useMutation, useLazyQuery } from "@apollo/client";
+import { gql, useMutation, useLazyQuery, useQuery } from "@apollo/client";
+import DataVerifier from "./tools";
 
 const mutation_InsertOneUser = gql`
   mutation InsertOneUser($data: UserInsertInput!) {
@@ -19,7 +20,47 @@ const query_searchUserByEmail = gql`
   }
 `;
 
-export const useValidateEmail = (email) => {
+const query_getAllUsers = gql`query Query($limit: Int) {
+  users(limit: $limit) {
+    _id
+    uiConf {
+      color
+    }
+    personal {
+      name
+    }
+  }
+}
+`
+
+export const useGetNetworkInUser=()=>{
+
+}
+
+export const useGetAllUsers = (limit = 100) => {
+  const { data, loading, error } = useQuery(
+    query_getAllUsers,{
+      variables: {
+        "limit": limit
+      }
+    }
+  );
+  let users
+  if (data) {
+    if(DataVerifier.isValidArray(data.users)){
+      users = data.users
+    }else{
+      users = []
+    }
+  }
+  if (error) {
+    console.error("query getAllUser: ",error);
+  }
+  //validateEmail({onCompleted:()=>{},onError:()=>{}})
+  return { users, loading, error }
+};
+
+export const useValidateEmail = () => {
   const [getData, { data, loading, error }] = useLazyQuery(
     query_searchUserByEmail
   );

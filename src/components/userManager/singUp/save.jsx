@@ -21,6 +21,15 @@ const ExplosiveButton = ({ formState }) => {
   });
 
   const explodeButton = () => {
+    /*
+    let col = "#2c41ff"
+    setTimeout(() => {
+      navigate(`/userId=${134154653}&newUser=yes&name=Juanito Hola&color=${col.replace("#","")}`)
+    }, 1500);
+    if (!isAnimate) {
+      setPressed(!isPressed);
+    }
+    */
     if (!isAnimate) {
       setPressed(!isPressed);
       if (!loading && !data) {
@@ -28,7 +37,7 @@ const ExplosiveButton = ({ formState }) => {
           user: formState,
           onCompleted: (data) => {
             setTimeout(()=>{
-              navigate("/red/user="+data.insertOneUser._id)
+              navigate(`/userId=${data.insertOneUser._id}&newUser=yes&name=${formState.personal.name}&color=${formState.uiConf.color.replace("#","")}`)
             },500)
           },
           onError: (error) => {
@@ -51,7 +60,7 @@ const ExplosiveButton = ({ formState }) => {
         style={buttonSpring}
         onClick={explodeButton}
       >
-        {isRegister ? "Continuar" : "Registrar"}
+        {isRegister ? "Bienvenido" : "Registrar"}
       </animated.button>
       {isRegister && <Confetti />}
     </div>
