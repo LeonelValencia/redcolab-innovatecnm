@@ -1,21 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import Confetti from "react-confetti";
 import "./singUp.css";
 import { useNewUserService } from "../../webServices/user";
 import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import ReplayIcon from "@mui/icons-material/Replay";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
 
 const ExplosiveButton = ({ formState }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isPressed, setPressed] = useState(false);
   const [isAnimate, setIsAnimate] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [insertNewUser, { loading, data, error }] = useNewUserService();
 
   const buttonSpring = useSpring({
-    width: isPressed ? "100%" : "100px",
-    height: isPressed ? "100%" : "100px",
-    transform: isPressed ? "scale(5)" : "scale(1)",
+    width: "100px",
+    height: "100px",
+    transform: isPressed ? "scale(20)" : "scale(1)",
     backgroundColor: isPressed ? formState.uiConf.color : "#2c41ff",
     config: { duration: 1000 },
   });
@@ -36,16 +44,21 @@ const ExplosiveButton = ({ formState }) => {
         insertNewUser({
           user: formState,
           onCompleted: (data) => {
-            setTimeout(()=>{
-              navigate(`/userId=${data.insertOneUser._id}&newUser=yes&name=${formState.personal.name}&color=${formState.uiConf.color.replace("#","")}`)
-            },500)
+            setTimeout(() => {
+              navigate(
+                `/userId=${data.insertOneUser._id}&newUser=yes&name=${
+                  formState.personal.name
+                }&color=${formState.uiConf.color.replace("#", "")}`
+              );
+            }, 500);
           },
           onError: (error) => {
-            console.error("error: ",error);
+            console.error("error: ", error);
           },
         });
       }
     }
+    
     setIsAnimate(true);
     setTimeout(() => {
       setIsRegister(!isRegister);
@@ -54,7 +67,7 @@ const ExplosiveButton = ({ formState }) => {
   };
 
   return (
-    <div className="explosive-button-container">
+    <div>
       <animated.button
         className={`explosive-button ${isPressed ? "pressed" : ""}`}
         style={buttonSpring}
@@ -67,12 +80,230 @@ const ExplosiveButton = ({ formState }) => {
   );
 };
 
-export default function Save({ formState }) {
-  //console.log(formState);
+function ImageUpload({ formState, setImage }) {
+  const videoRef = useRef(null);
+  const [viewCamera, setViewCamera] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [cameraDevices, setCameraDevices] = useState([]);
+  const [selectedDevice, setSelectedDevice] = useState(null);
+  const [isPhoto, setIsPhoto] = useState(true)
+
+  useEffect(() => {
+    async function getCameraDevices() {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(
+          (device) => device.kind === "videoinput"
+        );
+        setCameraDevices(videoDevices);
+        if (videoDevices.length > 0) {
+          setSelectedDevice(videoDevices[0]);
+        }
+      } catch (error) {
+        console.error("Error al obtener dispositivos de cámara:", error);
+      }
+    }
+
+    getCameraDevices();
+  }, []);
+
+  const handleCamera = async () => {
+    if (viewCamera) {
+      viewCamera.getTracks().forEach((track) => track.stop());
+      setViewCamera(null);
+    } else {
+      if (selectedDevice) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: selectedDevice.deviceId },
+          });
+          setViewCamera(stream);
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        } catch (error) {
+          console.error("No se pudo acceder a la cámara:", error);
+        }
+      }
+    }
+  };
+
+  const handleChangeCamera = () => {
+    if (cameraDevices.length > 1) {
+      const indexSelect = cameraDevices.findIndex(
+        (device) => device.deviceId === selectedDevice.deviceId
+      );
+      if (indexSelect + 1 === cameraDevices.length) {
+        setSelectedDevice(cameraDevices[0]);
+      } else {
+        setSelectedDevice(cameraDevices[indexSelect + 1]);
+      }
+    }
+  };
+
+  const captureImage = async () => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    // Captura la imagen del video
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    canvas
+      .getContext("2d")
+      .drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    // Convierte la imagen en una representación de datos (base64)
+    const imageData = canvas.toDataURL("image/jpeg");
+    setCapturedImage(imageData);
+    handleCamera();
+  };
+
+  const createInitialImage = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 200;
+    canvas.height = 150;
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, 200, 150);
+
+    // Establece el fondo del lienzo
+    context.fillStyle = formState.uiConf.color;
+    context.fillRect(0, 0, 200, 150);
+    // Dibuja la letra inicial del nombre de usuario
+    context.font = "100px Arial";
+    context.fillStyle = "#ffffff";
+    const userName = formState.personal.name === "" ? "P" : formState.personal.name
+    context.fillText(userName.toUpperCase(), 70, 100);
+    const imageData = canvas.toDataURL("image/jpeg");
+    setCapturedImage(imageData);
+  };
+
+  const saveImage = () => {
+    if (capturedImage) {
+      setImage(capturedImage)
+      const controls = document.getElementById("cameraControls")
+      if(controls){
+        controls.style.display = 'none'
+      }
+    }
+  };
+
   return (
-    <div>
-      <ExplosiveButton formState={formState} />{" "}
+    <div className="video-cont">
+      <div>
+        <div
+          onClick={() => {
+            setCapturedImage(null);
+            handleCamera();
+          }}
+          className="video-mask"
+          style={{
+            border: `5px solid ${formState.uiConf.color}`,
+            backgroundColor: formState.uiConf.color,
+          }}
+        >
+          {!viewCamera && (
+            <div className="video-tag">
+              <p style={{ color: "white", width: "150px" }}>
+                Presiona para iniciar cámara
+              </p>
+            </div>
+          )}
+          <video ref={videoRef} width={200} autoPlay />
+          <div className="video-result">
+            {capturedImage &&(
+              <img src={capturedImage}  width={200}  alt="Imagen Capturada" />
+            )}
+          </div>
+        </div>
+      </div>
+      <div id="cameraControls" >
+      {viewCamera ? (
+        <div className="video-controls">
+          {!capturedImage && (
+            <>
+              <Typography variant="caption" display="block" gutterBottom>
+                Presione para tomar foto
+              </Typography>
+              <IconButton
+                sx={{ backgroundColor: "#00ff00", padding: "30px" }}
+                onClick={captureImage}
+                aria-label="delete"
+                size="large"
+              >
+                <PhotoCameraIcon fontSize="large" sx={{ color: "white" }} />
+              </IconButton>
+              <br />
+              {cameraDevices.length > 1 && (
+                <Button onClick={handleChangeCamera} variant="contained">
+                  cambiar Cámara
+                </Button>
+              )}
+            </>
+          )}
+        </div>
+      ) : (
+        <div className="video-controls">
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              color="warning"
+              startIcon={!captureImage && <ReplayIcon />}
+              onClick={() => {
+                setCapturedImage(null);
+                handleCamera();
+                setIsPhoto(true)
+              }}
+            >
+              {(capturedImage && isPhoto) ? "Tomar Otra" : "Iniciar Cámara"}
+            </Button>
+            <Button variant="contained" color="success"endIcon={<SendIcon />}
+            onClick={()=>{
+              if (capturedImage) {
+                saveImage()
+              }else{
+                createInitialImage()
+                setIsPhoto(false)
+              }
+            }}
+            >
+              {capturedImage ? "Continuar" : "En otro momento"}
+            </Button>
+          </Stack>
+        </div>
+      )}
+      </div>
+
+      <br />
     </div>
   );
 }
-
+export default function Save({ formState }) {
+  const [isImage, setImage] = useState();
+  let _formState = {...formState}
+  if(isImage){
+    _formState={...formState, image: isImage}
+  }
+  return (
+    <Box
+      sx={{
+        marginTop: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Typography component="h1" variant="h5">
+        Todo Listo!
+      </Typography>
+      <Typography component="h2" variant="h6" gutterBottom>
+        Tomate una foto!
+      </Typography>
+      <ImageUpload setImage={setImage} formState={formState} />
+      <Typography variant="caption" display="block" gutterBottom>
+        Sonríe
+      </Typography>
+      {isImage && <ExplosiveButton formState={_formState} />}
+    </Box>
+  );
+}
