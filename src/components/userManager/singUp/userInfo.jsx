@@ -256,7 +256,8 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
+
+              {/*<Grid item xs={12}>
                 <TextField
                   fullWidth
                   id="mobile"
@@ -273,7 +274,7 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
                     setPersonal({ ...personal, mobile: event.target.value });
                   }}
                 />
-              </Grid>
+              </Grid>*/}
               {/*
                 <Grid item xs={12}>
                 <TextField

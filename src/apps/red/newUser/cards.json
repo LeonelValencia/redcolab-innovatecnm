@@ -1,0 +1,33 @@
+[
+    {
+        "_id": "card_01",
+        "subtitle": "Ayuda Introductoria",
+        "title": "Bienvenido n.n/",
+        "description": "Nuestra gran red colaborativa te ayudara a incursionar en el mundo colaborativo",
+        "actions": ["startConfeti"]
+    },
+    {
+        "_id": "card_02",
+        "subtitle": "Ayuda Introductoria",
+        "title": "Esta es nuestra Red",
+        "description": "Lo que estas viendo es una gran red colaborativa, cada nodo es un colaborador, un proyecto o un road map, las lineas muestran las uniones entre los nodos...",
+        "actions": [
+            "stopConfeti",
+            "hideUser"
+        ]
+    },
+    {
+        "_id": "card_03",
+        "subtitle": "Ayuda Introductoria",
+        "title": "¡Aquí estas!",
+        "description": "Ahora es un colaborador, comienza a colaborar uniéndote a proyectos o roadmaps,",
+        "actions": ["showUser"]
+    },
+    {
+        "_id": "card_04",
+        "subtitle": "Ayuda Introductoria",
+        "title": "Comencemos",
+        "description": "Pulsa tu nodo para ver tu perfil colaborativo o explora nuestra red y comencemos a trabajar",
+        "actions": [""]
+    }
+]
