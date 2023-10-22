@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import { useReducer, useState } from "react";
 import helpCars from "./cards.json";
 import DataVerifier from "../../../components/webServices/tools";
+import { useNavigate } from "react-router-dom";
+
 
 function reducer(state, action) {
   let _state = { ...state };
@@ -43,7 +45,7 @@ export default function UserWelcome({
     user: false,
   });
   const { name, color } = userInfo;
-
+  const navigate = useNavigate()
   const buttonSpring = useSpring({
     width: state.user ? "200px" : "0px",
     height: state.user ? "200px" : "0px",
@@ -70,6 +72,7 @@ export default function UserWelcome({
           ...welcomeButton,
           backgroundColor: "#" + color,
         }}
+        onClick={()=>{navigate("/user/"+userId)}}
       >
         <p>
           <b>{name}</b>

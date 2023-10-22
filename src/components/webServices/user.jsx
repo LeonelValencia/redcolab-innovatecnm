@@ -9,6 +9,78 @@ const mutation_InsertOneUser = gql`
   }
 `;
 
+const query_getUserById = gql`query ExampleQuery($query: UserQueryInput) {
+  user(query: $query) {
+    academic {
+      dateEnd
+      dateStart
+      degree {
+        name
+        key
+        description
+      }
+      description
+      schoolId
+      schoolName
+      studyStatus {
+        course {
+          description
+          code
+          name
+          specialty
+        }
+        currentSemester
+        studentId
+      }
+    }
+    contact {
+      email
+      socialNetworks {
+        socialID
+        url
+      }
+    }
+    image
+    interest
+    password
+    personal {
+      address
+      age
+      dateBirth
+      gender
+      lastName
+      mobile
+      name
+    }
+    skills {
+      collaboration {
+        description
+        name
+        score
+      }
+      soft {
+        description
+        name
+        score
+      }
+      technical {
+        description
+        name
+        score
+      }
+      trendInterest {
+        formal
+        nature
+        social
+      }
+    }
+    uiConf {
+      color
+    }
+  }
+}
+`
+
 const query_searchUserByEmail = gql`
   query User($query: UserQueryInput) {
     user(query: $query) {
@@ -36,6 +108,31 @@ const query_getAllUsers = gql`query Query($limit: Int) {
 export const useGetNetworkInUser=()=>{
 
 }
+
+export const useGetUserById = (id="") => {
+  const { data, loading, error } = useQuery(
+    query_getUserById,{
+      variables: {
+        query: {
+          _id: id
+        }
+      }
+    }
+  );
+  let user
+  if (data) {
+    if(DataVerifier.isValidObject(data.user)){
+      user = data.user
+    }else{
+      user = null
+    }
+  }
+  if (error) {
+    console.error("query getAllUser: ",error);
+  }
+  //validateEmail({onCompleted:()=>{},onError:()=>{}})
+  return { user, loading, error }
+};
 
 export const useGetAllUsers = (limit = 100) => {
   const { data, loading, error } = useQuery(

@@ -16,12 +16,29 @@ import client from "./components/webServices";
 //import AuthProvider from "./components/userManager/authProvider";
 import Super from "./apps/super";
 
-
 const router = createBrowserRouter([
-  
   {
     path: "/super",
     element: <Super />,
+  },
+
+  {
+    path: "/user",
+    element: (
+      <Layout>
+        <User />
+      </Layout>
+    ),
+    children: [
+      {
+        path: ":id",
+        children:[
+          {
+            path:":site"
+          }
+        ]
+      },
+    ],
   },
   {
     path: "/",
@@ -43,17 +60,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedRoute />,
-    children: [
-      {
-        path: "/user",
-        element: <User />,
-        children: [
-          {
-            path: ":site",
-          },
-        ],
-      },
-    ],
+    children: [],
   },
 ]);
 
