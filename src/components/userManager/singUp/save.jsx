@@ -58,7 +58,7 @@ const ExplosiveButton = ({ formState }) => {
         });
       }
     }
-    
+
     setIsAnimate(true);
     setTimeout(() => {
       setIsRegister(!isRegister);
@@ -86,7 +86,8 @@ function ImageUpload({ formState, setImage }) {
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraDevices, setCameraDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState(null);
-  const [isPhoto, setIsPhoto] = useState(true)
+  const [isMobile, setIsMobile] = useState(/Mobi|Android/i.test(navigator.userAgent));
+  const [isPhoto, setIsPhoto] = useState(true);
 
   useEffect(() => {
     async function getCameraDevices() {
@@ -100,6 +101,7 @@ function ImageUpload({ formState, setImage }) {
           setSelectedDevice(videoDevices[0]);
         }
       } catch (error) {
+        setIsMobile(true)
         console.error("Error al obtener dispositivos de cámara:", error);
       }
     }
@@ -156,7 +158,6 @@ function ImageUpload({ formState, setImage }) {
     // Convierte la imagen en una representación de datos (base64)
     const imageData = canvas.toDataURL("image/jpeg");
     setCapturedImage(imageData);
-    handleCamera();
   };
 
   const createInitialImage = () => {
@@ -172,7 +173,8 @@ function ImageUpload({ formState, setImage }) {
     // Dibuja la letra inicial del nombre de usuario
     context.font = "100px Arial";
     context.fillStyle = "#ffffff";
-    const userName = formState.personal.name === "" ? "P" : formState.personal.name
+    const userName =
+      formState.personal.name === "" ? "P" : formState.personal.name;
     context.fillText(userName.toUpperCase(), 70, 100);
     const imageData = canvas.toDataURL("image/jpeg");
     setCapturedImage(imageData);
@@ -180,11 +182,39 @@ function ImageUpload({ formState, setImage }) {
 
   const saveImage = () => {
     if (capturedImage) {
-      setImage(capturedImage)
-      const controls = document.getElementById("cameraControls")
-      if(controls){
-        controls.style.display = 'none'
+      setImage(capturedImage);
+      const controls = document.getElementById("cameraControls");
+      if (controls) {
+        controls.style.display = "none";
       }
+    }
+  };
+
+  const handleBrowseClick = () => {
+    videoRef.current.click();
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.onload = () => {
+        // Define el nuevo ancho y alto para la imagen
+        const newWidth = 200; // Ancho deseado
+        const newHeight = 150; // Alto deseado
+
+        // Dibuja la imagen redimensionada en el canvas
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        context.drawImage(image, 0, 0, newWidth, newHeight);
+        // Convierte la imagen del canvas en base64
+        const imageData = canvas.toDataURL('image/jpeg');
+        setCapturedImage(imageData);
+      };
     }
   };
 
@@ -193,8 +223,12 @@ function ImageUpload({ formState, setImage }) {
       <div>
         <div
           onClick={() => {
+            if (isMobile) {
+              handleBrowseClick();
+            } else {
+              handleCamera();
+            }
             setCapturedImage(null);
-            handleCamera();
           }}
           className="video-mask"
           style={{
@@ -209,69 +243,89 @@ function ImageUpload({ formState, setImage }) {
               </p>
             </div>
           )}
-          <video ref={videoRef} width={200} autoPlay />
+          {isMobile ? (
+            <input
+              ref={videoRef}
+              width={200}
+              type="file"
+              accept="image/*"
+              id="capture"
+              capture="camera"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+            />
+          ) : (
+            <video ref={videoRef} width={200} autoPlay />
+          )}
           <div className="video-result">
-            {capturedImage &&(
-              <img src={capturedImage}  width={200}  alt="Imagen Capturada" />
+            {capturedImage && (
+              <img src={capturedImage} width={200} alt="Imagen Capturada" />
             )}
           </div>
         </div>
       </div>
-      <div id="cameraControls" >
-      {viewCamera ? (
-        <div className="video-controls">
-          {!capturedImage && (
-            <>
-              <Typography variant="caption" display="block" gutterBottom>
-                Presione para tomar foto
-              </Typography>
-              <IconButton
-                sx={{ backgroundColor: "#00ff00", padding: "30px" }}
-                onClick={captureImage}
-                aria-label="delete"
-                size="large"
+      <div id="cameraControls">
+        {viewCamera ? (
+          <div className="video-controls">
+            {!capturedImage && (
+              <>
+                <Typography variant="caption" display="block" gutterBottom>
+                  Presione para tomar foto
+                </Typography>
+                <IconButton
+                  sx={{ backgroundColor: "#00ff00", padding: "30px" }}
+                  onClick={captureImage}
+                  aria-label="delete"
+                  size="large"
+                >
+                  <PhotoCameraIcon fontSize="large" sx={{ color: "white" }} />
+                </IconButton>
+                <br />
+                {cameraDevices.length > 1 && (
+                  <Button onClick={handleChangeCamera} variant="contained">
+                    cambiar Cámara
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="video-controls">
+            <Stack direction="row" spacing={2}>
+              <Button
+                variant="outlined"
+                color="warning"
+                startIcon={!captureImage && <ReplayIcon />}
+                onClick={() => {
+                  if (isMobile) {
+                    handleBrowseClick();
+                  } else {
+                    handleCamera();
+                  }
+                  setIsPhoto(true);
+                  setCapturedImage(null);
+                }}
               >
-                <PhotoCameraIcon fontSize="large" sx={{ color: "white" }} />
-              </IconButton>
-              <br />
-              {cameraDevices.length > 1 && (
-                <Button onClick={handleChangeCamera} variant="contained">
-                  cambiar Cámara
-                </Button>
-              )}
-            </>
-          )}
-        </div>
-      ) : (
-        <div className="video-controls">
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              color="warning"
-              startIcon={!captureImage && <ReplayIcon />}
-              onClick={() => {
-                setCapturedImage(null);
-                handleCamera();
-                setIsPhoto(true)
-              }}
-            >
-              {(capturedImage && isPhoto) ? "Tomar Otra" : "Iniciar Cámara"}
-            </Button>
-            <Button variant="contained" color="success"endIcon={<SendIcon />}
-            onClick={()=>{
-              if (capturedImage) {
-                saveImage()
-              }else{
-                createInitialImage()
-                setIsPhoto(false)
-              }
-            }}
-            >
-              {capturedImage ? "Continuar" : "En otro momento"}
-            </Button>
-          </Stack>
-        </div>
-      )}
+                {capturedImage && isPhoto ? "Tomar Otra" : "Iniciar Cámara"}
+              </Button>
+              <Button
+                variant="contained"
+                color="success"
+                endIcon={<SendIcon />}
+                onClick={() => {
+                  if (capturedImage) {
+                    saveImage();
+                  } else {
+                    createInitialImage();
+                    setIsPhoto(false);
+                  }
+                }}
+              >
+                {capturedImage ? "Continuar" : "En otro momento"}
+              </Button>
+            </Stack>
+          </div>
+        )}
       </div>
 
       <br />
@@ -280,9 +334,9 @@ function ImageUpload({ formState, setImage }) {
 }
 export default function Save({ formState }) {
   const [isImage, setImage] = useState();
-  let _formState = {...formState}
-  if(isImage){
-    _formState={...formState, image: isImage}
+  let _formState = { ...formState };
+  if (isImage) {
+    _formState = { ...formState, image: isImage };
   }
   return (
     <Box
