@@ -101,9 +101,11 @@ export default function TrendInterest({ user }) {
         </CardContent>
         <CardActions>
           <Button onClick={handleDrawer} color="success" >Saber mas</Button>
-          <Drawer anchor={"bottom"} sx={{height: "50%"}} open={open} onClose={handleDrawer}>
+          {/*
+                    <Drawer anchor={"bottom"} sx={{height: "50%"}} open={open} onClose={handleDrawer}>
             <Summary trendInterest={user.skills.trendInterest} />
           </Drawer>
+          */}
         </CardActions>
       </Card>
     </Grid>

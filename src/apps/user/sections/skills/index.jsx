@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import TrendInterest from "./trendInterest";
+import Moss from "./moss";
 
 
 export default function Skills({ user }) {
@@ -47,31 +48,7 @@ export default function Skills({ user }) {
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container spacing={4}>
           <TrendInterest user={user} />
-          <Grid item key={"card02"} xs={12} sm={6} md={4}>
-            <Card
-              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
-            >
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Nivel de adaptabilidad social
-                </Typography>
-                <Typography>
-                  Es la capacidad para ajustarse y funcionar de manera efectiva
-                  en un entorno social o cultural específico.
-                </Typography>
-                <Typography>
-                  Saber que tan adaptable eres te ayudara a enfocarte en el tipo
-                  de relaciones humanas al momento de colaborar.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Ver Resumen</Button>
-                <Button size="small" color="success">
-                  ¿Como mejorar?
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          <Moss  user={user} />
           <Grid item key={"card02a"} xs={12} sm={6} md={4}>
             <Card
               sx={{ height: "100%", display: "flex", flexDirection: "column" }}

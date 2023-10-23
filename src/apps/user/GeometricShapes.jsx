@@ -53,7 +53,7 @@ function GeometricShapes({ backgroundColor, user }) {
             src={user.image}
             width={200}
             alt="Foto de perfil"
-            style={{ width: "50vw" }}
+            style={{ width: "20vw" }}
           />
         </div>
     </div>
