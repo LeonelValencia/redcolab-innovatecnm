@@ -82,11 +82,13 @@ const ExplosiveButton = ({ formState }) => {
 
 function ImageUpload({ formState, setImage }) {
   const videoRef = useRef(null);
-  const [viewCamera, setViewCamera] = useState(null);
+  const [viewCamera, setViewCamera] = useState();
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraDevices, setCameraDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState(null);
-  const [isMobile, setIsMobile] = useState(/Mobi|Android/i.test(navigator.userAgent));
+  const [isMobile, setIsMobile] = useState(
+    /Mobi|Android/i.test(navigator.userAgent)
+  );
   const [isPhoto, setIsPhoto] = useState(true);
 
   useEffect(() => {
@@ -101,18 +103,17 @@ function ImageUpload({ formState, setImage }) {
           setSelectedDevice(videoDevices[0]);
         }
       } catch (error) {
-        setIsMobile(true)
+        setIsMobile(true);
         console.error("Error al obtener dispositivos de cámara:", error);
       }
     }
-
     getCameraDevices();
-  }, []);
+  },[]);
 
   const handleCamera = async () => {
     if (viewCamera) {
       viewCamera.getTracks().forEach((track) => track.stop());
-      setViewCamera(null);
+      setViewCamera(undefined);
     } else {
       if (selectedDevice) {
         try {
@@ -147,7 +148,6 @@ function ImageUpload({ formState, setImage }) {
     if (!videoRef.current) {
       return;
     }
-
     // Captura la imagen del video
     const canvas = document.createElement("canvas");
     canvas.width = videoRef.current.videoWidth;
@@ -158,6 +158,7 @@ function ImageUpload({ formState, setImage }) {
     // Convierte la imagen en una representación de datos (base64)
     const imageData = canvas.toDataURL("image/jpeg");
     setCapturedImage(imageData);
+    handleCamera();
   };
 
   const createInitialImage = () => {
@@ -212,7 +213,7 @@ function ImageUpload({ formState, setImage }) {
         canvas.height = newHeight;
         context.drawImage(image, 0, 0, newWidth, newHeight);
         // Convierte la imagen del canvas en base64
-        const imageData = canvas.toDataURL('image/jpeg');
+        const imageData = canvas.toDataURL("image/jpeg");
         setCapturedImage(imageData);
       };
     }
@@ -290,7 +291,7 @@ function ImageUpload({ formState, setImage }) {
             )}
           </div>
         ) : (
-          <div className="video-controls">
+          <div>
             <Stack direction="row" spacing={2}>
               <Button
                 variant="outlined"
