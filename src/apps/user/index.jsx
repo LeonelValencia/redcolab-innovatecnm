@@ -6,6 +6,8 @@ import { useGetUserById } from "../../components/webServices/user";
 import CircularSpinner from "../../components/spinners";
 import Sections from "./sections";
 import GeometricShapes from "./GeometricShapes";
+import Typography from "@mui/material/Typography";
+
 //import { useUserContext } from '../../components/userManager/authProvider'
 // const UserContext = useUserContext()
 // const {name,/*email*/}= UserContext.getUser()
@@ -30,22 +32,10 @@ function Main({ id }) {
   console.log(user);
   return (
     <div>
-      <GeometricShapes backgroundColor={user.uiConf.color} />
-
-      {/* Foto de perfil y otros elementos de la portada */}
-      <div className="img-container" >
-        <div
-          className="img-mask"
-          style={{
-            border: `5px solid ${user.uiConf.color}`,
-            backgroundColor: user.uiConf.color,
-          }}
-        >
-          <img src={user.image} width={200} alt="Foto de perfil" />
-        </div>
-      </div>
+      <GeometricShapes backgroundColor={user.uiConf.color} user={user} />
+      <Typography variant="h1">{user.personal.name}</Typography>
       <div className="section-container">
-      <Sections user={user} />
+        <Sections user={user} />
       </div>
     </div>
   );
