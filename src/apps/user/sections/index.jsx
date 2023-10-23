@@ -2,6 +2,7 @@ import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
+import Activity from "./activity";
 //import { styled } from '@mui/material/styles';
 
 export default function Sections({ user }) {
@@ -17,7 +18,8 @@ export default function Sections({ user }) {
       opacity: 1,
     },
     "&.Mui-selected": {
-      color: user.uiConf.color,
+      color: "#ffffff",
+      backgroundColor: user.uiConf.color
     },
     "&.Mui-focusVisible": {
       backgroundColor: "#d1eaff",
@@ -30,7 +32,6 @@ export default function Sections({ user }) {
         onChange={handleTabChange}
         indicatorColor="primary"
         textColor="primary"
-        centered
         variant="scrollable"
         scrollButtons
         allowScrollButtonsMobile
@@ -41,25 +42,22 @@ export default function Sections({ user }) {
           },
         }}
       >
-        <Tab label="Resumen" />
-        <Tab label="Actividad" />
-        <Tab label="Valoraciones" />
-        <Tab label="Proyectos" />
-        <Tab label="Conocimiento" />
+        <Tab sx={sxCustom} label="Actividad" />
+        <Tab sx={sxCustom} label="Aptitudes" />
+        <Tab sx={sxCustom} label="Conocimientos" />
+        <Tab sx={sxCustom} label="Proyectos" />
+        <Tab sx={sxCustom} label="Información" />
+        
       </Tabs>
-      {selectedTab === 0 && (
-        <Typography component="div">
-          {/* Contenido de la sección "Resumen" */}
-        </Typography>
-      )}
+      {selectedTab === 0 && (<Activity user={user} />)}
       {selectedTab === 1 && (
         <Typography component="div">
-          {/* Contenido de la sección "Actividad" */}
+          {/* Contenido de la sección "Aptitudes" */}
         </Typography>
       )}
       {selectedTab === 2 && (
         <Typography component="div">
-          {/* Contenido de la sección "Valoraciones" */}
+          {/* Contenido de la sección "Conocimientos" */}
         </Typography>
       )}
       {selectedTab === 3 && (
@@ -69,7 +67,7 @@ export default function Sections({ user }) {
       )}
       {selectedTab === 4 && (
         <Typography component="div">
-          {/* Contenido de la sección "Conocimiento" */}
+          {/* Contenido de la sección "Información" */}
         </Typography>
       )}
     </div>

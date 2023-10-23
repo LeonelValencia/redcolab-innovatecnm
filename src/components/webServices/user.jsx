@@ -77,6 +77,7 @@ const query_getUserById = gql`query ExampleQuery($query: UserQueryInput) {
     uiConf {
       color
     }
+    dateInit
   }
 }
 `
@@ -252,7 +253,8 @@ export const userSchema = {
   interest: [],
   uiConf:{
     color: "#999999"
-  }
+  },
+  dateInit: new Date()
 };
 
 export const trendInterestVectorSchema = {
