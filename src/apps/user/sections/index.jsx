@@ -19,7 +19,7 @@ export default function Sections({ user }) {
     },
     "&.Mui-selected": {
       color: "#ffffff",
-      backgroundColor: user.uiConf.color
+      backgroundColor: user.uiConf.color,
     },
     "&.Mui-focusVisible": {
       backgroundColor: "#d1eaff",
@@ -36,7 +36,7 @@ export default function Sections({ user }) {
         scrollButtons
         allowScrollButtonsMobile
         sx={{
-          borderBottom: "2px solid "+user.uiConf.color,
+          borderBottom: "2px solid " + user.uiConf.color,
           "& .MuiTabs-indicator": {
             backgroundColor: "#1890ff",
           },
@@ -47,9 +47,8 @@ export default function Sections({ user }) {
         <Tab sx={sxCustom} label="Conocimientos" />
         <Tab sx={sxCustom} label="Proyectos" />
         <Tab sx={sxCustom} label="Información" />
-        
       </Tabs>
-      {selectedTab === 0 && (<Activity user={user} />)}
+      {selectedTab === 0 && <Activity user={user} />}
       {selectedTab === 1 && (
         <Typography component="div">
           {/* Contenido de la sección "Aptitudes" */}
@@ -70,6 +69,17 @@ export default function Sections({ user }) {
           {/* Contenido de la sección "Información" */}
         </Typography>
       )}
+      <br />
+      <br />
+      <br />
+      <br />
+      <Typography variant="body2" color="text.secondary" align="center">
+        {`"Tecnología para la colaboración"`}
+        <br />
+        {`Redcolab Copyright ©`}
+        {new Date().getFullYear()}
+        <br />
+      </Typography>
     </div>
   );
 }
