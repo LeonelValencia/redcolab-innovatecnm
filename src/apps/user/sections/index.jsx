@@ -3,6 +3,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Activity from "./activity";
+import Skills from "./skills";
 //import { styled } from '@mui/material/styles';
 
 export default function Sections({ user }) {
@@ -49,11 +50,7 @@ export default function Sections({ user }) {
         <Tab sx={sxCustom} label="Información" />
       </Tabs>
       {selectedTab === 0 && <Activity user={user} />}
-      {selectedTab === 1 && (
-        <Typography component="div">
-          {/* Contenido de la sección "Aptitudes" */}
-        </Typography>
-      )}
+      {selectedTab === 1 && <Skills user={user} />}
       {selectedTab === 2 && (
         <Typography component="div">
           {/* Contenido de la sección "Conocimientos" */}
