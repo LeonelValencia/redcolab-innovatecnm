@@ -48,6 +48,13 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
           content: "data(label)",
         },
       },
+      {
+        selector: "edge",
+        style: {
+          content: "data(label)",
+          'line-color': '#000000'
+        },
+      },
     ],
   };
 
@@ -55,7 +62,10 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
 
   users.forEach((user) => {
     cyConfig.elements.push({
-      data: { id: user._id, label: user.personal.name },
+      data: { id: user._id, label: user.personal.name,  },
+      style : {
+        'background-color': user.uiConf.color,
+      }
     });
     cyConfig.elements.push({
       data: { id: "edge" + user._id, source: user._id, target: "redColab" },
@@ -105,7 +115,7 @@ function animateNode(node) {
       // Cuando la animación termina, inicia una nueva animación
       setTimeout(() => {
         animateNode(node);
-      }, Math.floor(Math.random() * 500));
+      }, Math.floor(Math.random() * 5000));
       
     });
 }
