@@ -77,15 +77,12 @@ export default function Moss({ user }) {
   });
   
   return (
-    <Grid item key={"card01"} xs={12} sm={6} md={4}>
+    <Grid item key={"card01"} xs={12}>
       <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        <CardContent sx={{ flexGrow: 1 }}>
+        <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography gutterBottom variant="h5" component="h2">
             Adaptabilidad Social
           </Typography>
-          <div>
-            <BarChart data={data} />
-          </div>
           <Typography>
             Para el desarrollo colaborativo es importante que la conozcas pues
             te permite saber tus capacidades de participación, supervisión,
@@ -95,6 +92,9 @@ export default function Moss({ user }) {
             personalidad, mide mas aspectos de sociabilidad que aspectos de la
             personalidad.
           </Typography>
+          <div>
+            <BarChart data={data} />
+          </div>
         </CardContent>
         <CardActions>
           <Button onClick={handleDrawer} color="success">

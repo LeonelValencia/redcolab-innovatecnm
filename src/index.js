@@ -21,7 +21,6 @@ const router = createBrowserRouter([
     path: "/super",
     element: <Super />,
   },
-
   {
     path: "/user",
     element: (

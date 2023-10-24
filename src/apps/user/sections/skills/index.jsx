@@ -46,10 +46,10 @@ export default function Skills({ user }) {
         </Container>
       </Box>
       <Container sx={{ py: 8 }} maxWidth="md">
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           <TrendInterest user={user} />
           <Moss  user={user} />
-          <Grid item key={"card02a"} xs={12} sm={6} md={4}>
+          <Grid item key={"card02a"} xs={12} >
             <Card
               sx={{ height: "100%", display: "flex", flexDirection: "column" }}
             >
@@ -72,7 +72,7 @@ export default function Skills({ user }) {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item key={"card03"} xs={12} sm={6} md={4}>
+          <Grid item key={"card03"} xs={12} >
             <Card
               sx={{ height: "100%", display: "flex", flexDirection: "column" }}
             >
