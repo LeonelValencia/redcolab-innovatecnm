@@ -8,9 +8,6 @@ import SingUp from "../../components/userManager/singUp";
 import DrawNetwork from "./draw";
 function Red() {
   const { site } = useParams();
-  if (site === "signUp") {
-    return <SingUp />;
-  }
   //user="+data.insertOneUser._id
   const params = new URLSearchParams(site);
   return (

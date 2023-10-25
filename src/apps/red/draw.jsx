@@ -9,7 +9,7 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
   /*let users = [];
   let loading = false;*/
   const [cy, setCy] = useState();
-  const navigation = useNavigate()
+  const navigation = useNavigate();
   const { users, loading } = useGetAllUsers();
   const [animated, setAnimated] = useState(false);
 
@@ -20,13 +20,15 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
       if (!animated) {
         cy.nodes().forEach((node) => {
           //console.log(node.position('x'));
-          animateNode(node);
+          setTimeout(() => {
+            animateNode(node);
+          }, Math.floor(Math.random() * 5000));
         });
-        cy.nodes().on('tap', event => {
+        cy.nodes().on("tap", (event) => {
           const node = event.target;
-          node.stop()
-          navigation("/user/"+node.id())
-          console.log('Nodo clicado:', node.id());
+          node.stop();
+          navigation("/user/" + node.id());
+          console.log("Nodo clicado:", node.id());
           // Realiza aquí la lógica que desees cuando se haga clic en el nodo.
         });
         console.log("animated");
@@ -40,7 +42,12 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
   }
 
   let cyConfig = {
-    elements: [{ data: { id: "redColab", label: "Redcolab" } }],
+    elements: [
+      {
+        data: { id: "redColab", label: "Redcolab" },
+        style: { shape: "rectangle", "background-color": "#00A2FA" },
+      },
+    ],
     style: [
       {
         selector: "node",
@@ -52,7 +59,7 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
         selector: "edge",
         style: {
           content: "data(label)",
-          'line-color': '#000000'
+          "line-color": "#999999",
         },
       },
     ],
@@ -62,10 +69,10 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
 
   users.forEach((user) => {
     cyConfig.elements.push({
-      data: { id: user._id, label: user.personal.name,  },
-      style : {
-        'background-color': user.uiConf.color,
-      }
+      data: { id: user._id, label: user.personal.name },
+      style: {
+        "background-color": user.uiConf.color,
+      },
     });
     cyConfig.elements.push({
       data: { id: "edge" + user._id, source: user._id, target: "redColab" },
@@ -96,7 +103,7 @@ function animateNode(node) {
   const duration = 10000; // Duración de la animación en milisegundos
   const targetPosition = {
     x:
-      Math.floor(Math.random() * 50) * (Math.random() < 0.50 ? -1 : 1) +
+      Math.floor(Math.random() * 50) * (Math.random() < 0.5 ? -1 : 1) +
       node.position("x"), // Posición X aleatoria
     y:
       Math.floor(Math.random() * 50) * (Math.random() < 0.5 ? -1 : 1) +
@@ -116,6 +123,5 @@ function animateNode(node) {
       setTimeout(() => {
         animateNode(node);
       }, Math.floor(Math.random() * 5000));
-      
     });
 }

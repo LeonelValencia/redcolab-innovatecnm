@@ -16,42 +16,53 @@ import { useUserContext } from "../userManager/authProvider";
 import { useNavigate } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 
-const pages = ["red", "proyectos", "roadMaps"];
+const pages = [
+  {
+    label: "Red",
+    url: "/",
+  },
+  {
+    label: "Proyectos",
+    url: "/proyectos",
+  },
+  {
+    label: "RoadMaps",
+    url: "/roadmaps"
+  },
+];
 const USER_SETTINGS = [
   {
     label: "Perfil",
-    link: "/user",
+    url: "/user",
   },
   {
     label: "Mis Proyectos",
-    link: "/myProjects",
+    url: "/myProjects",
   },
   {
     label: "Mis RoadMaps",
-    link: "/myRoadMap",
+    url: "/myRoadMap",
   },
   {
     label: "Mi Red",
-    link: "/userNet",
+    url: "/userNet",
   },
 ];
 
 export default function AppMenu() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  
+
   const USER = useUserContext();
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -105,8 +116,11 @@ export default function AppMenu() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page} onClick={()=>{
+                  handleCloseNavMenu()
+                  navigate(page.url)
+                }}>
+                  <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -130,29 +144,21 @@ export default function AppMenu() {
           >
             REDCOLAB
           </Typography>
-          {USER.isAuth ? (
+          {USER.isAuth && (
             <UserMenu USER={USER} navigate={navigate} />
-          ) : (
-            <Tooltip title="sign up!">
-              <Button
-                onClick={() => {
-                  navigate("/signUp");
-                }}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Regístrate!
-              </Button>
-            </Tooltip>
           )}
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={()=>{
+                  handleCloseNavMenu()
+                  navigate(page.url)
+                }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.label}
               </Button>
             ))}
           </Box>
@@ -163,11 +169,11 @@ export default function AppMenu() {
               <Tooltip title="Login">
                 <Button
                   onClick={() => {
-                    navigate("/login");
+                    navigate("/signUp");
                   }}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  Inicia Sesión
+                  ¡Pre-Registro!
                 </Button>
               </Tooltip>
             </Box>

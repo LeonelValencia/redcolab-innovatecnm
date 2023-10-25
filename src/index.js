@@ -11,56 +11,52 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./components/userManager/protectedRoute";
 import User from "./apps/user";
 import Red from "./apps/red";
+import SingUp from "./components/userManager/singUp";
 import { ApolloProvider } from "@apollo/client";
 import client from "./components/webServices";
 //import AuthProvider from "./components/userManager/authProvider";
 import Super from "./apps/super";
 
 const router = createBrowserRouter([
-  {
-    path: "/super",
-    element: <Super />,
-  },
-  {
-    path: "/user",
-    element: (
-      <Layout>
-        <User />
-      </Layout>
-    ),
-    children: [
-      {
-        path: ":id",
-        children:[
-          {
-            path:":site"
-          }
-        ]
-      },
-    ],
-  },
+  
   {
     path: "/",
     element: (
-      <Layout>
-        <Red />
-      </Layout>
+      <Layout />
     ),
     children: [
       {
         path: "*",
-        element: <>404 - ERROR</>,
+        element: <>site no found</>
       },
       {
-        path: ":site",
+        index: true,
+        element: <Red />,
       },
-    ],
-  },
-  {
-    path: "/",
-    element: <ProtectedRoute />,
-    children: [],
-  },
+      {
+        path: "/signUp",
+        element: <SingUp />,
+      },
+      {
+        path: "/super",
+        element: <Super />,
+      },
+      {
+        path: "/user",
+        element: <User />,
+        children: [
+          {
+            path: ":id",
+            children:[
+              {
+                path:":site"
+              }
+            ]
+          },
+        ],
+      },
+    ]
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
