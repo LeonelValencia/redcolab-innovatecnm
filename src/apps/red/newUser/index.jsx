@@ -28,6 +28,9 @@ function reducer(state, action) {
         case "hideUser":
           _state = { ..._state, user: false };
           break;
+        case "viewOptions":
+          _state = { ..._state, viewOptions: true };
+          break;
         default:
           break;
       }
@@ -43,6 +46,7 @@ export default function UserWelcome({
   const [state, dispatch] = useReducer(reducer, {
     confetti: true,
     user: false,
+    viewOptions: false,
   });
   const { name, color } = userInfo;
   const navigate = useNavigate()
@@ -63,9 +67,9 @@ export default function UserWelcome({
     config: { duration: 1000 },
     delay: 1000,
   });
-  console.log(state);
+  //console.log(state);
   return (
-    <div style={welcomeContainer}>
+    <div className="newUserHelpContainer" style={welcomeContainer}>
       <animated.button
         style={{
           ...buttonSpring,
@@ -80,6 +84,9 @@ export default function UserWelcome({
       </animated.button>
       <animated.div className={"newUserMessage"} style={messageSpring} dela>
         <CarouselCard
+        goUser={()=>{navigate("/user/"+userId)}}
+        goRed={()=>{navigate("/")}}
+        viewOptions={state.viewOptions}
           cards={helpCars}
           onAction={(actions, actionValue) => {
             dispatch({ actions: actions, value: actionValue });
@@ -110,10 +117,9 @@ const welcomeButton = {
   transition: "all 0.3s ease-in-out",
 };
 
-export function CarouselCard({ cards = [], onAction = () => {} }) {
+export function CarouselCard({ cards = [], onAction = () => {}, viewOptions=false, goUser, goRed }) {
   const [indexCard, setIndexCard] = useState(0);
   const card = cards[indexCard];
-
   const handleChangeCard = (index) => {
     const newCard = cards[index];
     setIndexCard(index);
@@ -121,7 +127,7 @@ export function CarouselCard({ cards = [], onAction = () => {} }) {
   };
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" sx={{backgroundColor: "#FFFFFFaa"}} >
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {card.subtitle}
@@ -151,6 +157,22 @@ export function CarouselCard({ cards = [], onAction = () => {} }) {
           >
             siguiente
           </Button>
+        )}
+        {viewOptions && (
+          <>
+          <Button
+            onClick={goUser}
+            size="small"
+          >
+            ir a mi perfil
+          </Button>
+          <Button
+            onClick={goRed}
+            size="small"
+          >
+            ir a Red
+          </Button>
+          </>
         )}
       </CardActions>
     </Card>

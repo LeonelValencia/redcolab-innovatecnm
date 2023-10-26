@@ -13,7 +13,7 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
   const { users, loading } = useGetAllUsers();
   const [animated, setAnimated] = useState(false);
 
-  console.log(users);
+  //console.log(users);
 
   useEffect(() => {
     if (cy) {
@@ -28,10 +28,10 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
           const node = event.target;
           node.stop();
           navigation("/user/" + node.id());
-          console.log("Nodo clicado:", node.id());
+          //console.log("Nodo clicado:", node.id());
           // Realiza aquí la lógica que desees cuando se haga clic en el nodo.
         });
-        console.log("animated");
+        //console.log("animated");
         setAnimated(true);
       }
     }

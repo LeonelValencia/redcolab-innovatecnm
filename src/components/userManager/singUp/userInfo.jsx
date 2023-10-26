@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,8 +15,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 //import md5 from "md5";
 import { useValidateEmail } from "../../webServices/user";
+import ReCAPTCHA from "react-google-recaptcha";
 
-export default function UserInfo({ formState, dispatch, setEnableStep, handleNext }) {
+export default function UserInfo({
+  formState,
+  dispatch,
+  setEnableStep,
+  handleNext,
+}) {
   const [email, setEmail] = useState("");
   const [isValidMail, setIsValidMail] = useState(false);
   const [personal, setPersonal] = useState({ ...formState.personal });
@@ -26,6 +32,7 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
   const [snackType, setSnackType] = useState({ open: false });
   const [inputsInvalid, setInputsInvalid] = useState({});
   const [validateEmail, { loading }] = useValidateEmail();
+  const [isCaptcha, setIsCaptcha] = useState(false)
 
   const validMail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
 
@@ -73,7 +80,7 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
       validateEmail({
         email: email,
         onCompleted: (data = {}) => {
-          console.log(data)
+          //console.log(data);
           if (data.hasOwnProperty("user")) {
             if (data.user === null) {
               showSnackbar("success", "Todo se ve Genial, Continua. 🥳🥳🥳");
@@ -82,8 +89,8 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
               dispatch({
                 type: "setUserData",
                 contact: { email: email },
-                personal: personal
-            });
+                personal: personal,
+              });
             } else {
               showSnackbar("error", "El email ya esta registrado 😥😥");
               setInputsInvalid({
@@ -108,6 +115,15 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
       return;
     }
     setSnackType({ open: false });
+  };
+
+  const siteKey = "6LfP888oAAAAAI3BSqmTqpCb66GED6Y8WWoZGrYZ";
+
+  const handleRecaptchaChange = (value) => {
+    //console.log("Valor del CAPTCHA:", value);
+    if(value){
+      setIsCaptcha(true)
+    }
   };
 
   return (
@@ -333,25 +349,27 @@ export default function UserInfo({ formState, dispatch, setEnableStep, handleNex
                 </Typography>
               </Grid>
             </Grid>
+            <ReCAPTCHA sitekey={siteKey} onExpired={()=>{setIsCaptcha(false)}} onChange={handleRecaptchaChange} />
             {isValidMail ? (
               <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleNext}
-            >
-              Continuar
-            </Button>
-            ):(
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleNext}
+              >
+                Continuar
+              </Button>
+            ) : (
               <LoadingButton
-              loading={loading}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleValidateForm}
-            >
-              Validar
-            </LoadingButton>
+                disabled={!isCaptcha}
+                loading={loading}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleValidateForm}
+              >
+                Validar
+              </LoadingButton>
             )}
           </Box>
         </Box>

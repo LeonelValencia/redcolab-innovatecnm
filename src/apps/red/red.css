@@ -9,6 +9,8 @@
     width: 100%
 }
 
-.newUserMessage{
-    background-color: white;
+.newUserHelpContainer{
+    width: 100%;
+    position: absolute;
+    z-index: 99;
 }

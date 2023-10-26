@@ -29,7 +29,7 @@ function Main({ id }) {
     console.log("error: ", error);
     return <>error;</>;
   }
-  console.log(user);
+  //console.log(user);
   return (
     <div>
       <GeometricShapes backgroundColor={user.uiConf.color} user={user} />

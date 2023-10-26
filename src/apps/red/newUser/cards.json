@@ -28,6 +28,6 @@
         "subtitle": "Ayuda Introductoria",
         "title": "Comencemos",
         "description": "Pulsa tu nodo para ver tu perfil colaborativo o explora nuestra red y comencemos a trabajar",
-        "actions": [""]
+        "actions": ["viewOptions"]
     }
 ]

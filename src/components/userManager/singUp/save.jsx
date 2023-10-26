@@ -46,7 +46,7 @@ const ExplosiveButton = ({ formState }) => {
           onCompleted: (data) => {
             setTimeout(() => {
               navigate(
-                `/userId=${data.insertOneUser._id}&newUser=yes&name=${
+                `/newUser/userId=${data.insertOneUser._id}&newUser=yes&name=${
                   formState.personal.name
                 }&color=${formState.uiConf.color.replace("#", "")}`
               );
