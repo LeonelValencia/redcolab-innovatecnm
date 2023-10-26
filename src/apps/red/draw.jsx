@@ -100,20 +100,17 @@ export default function DrawNetwork({ userId, isNewUser, userInfo }) {
 }
 
 function animateNode(node) {
-  const duration = 10000; // Duración de la animación en milisegundos
-  const targetPosition = {
-    x:
-      Math.floor(Math.random() * 50) * (Math.random() < 0.5 ? -1 : 1) +
-      node.position("x"), // Posición X aleatoria
-    y:
-      Math.floor(Math.random() * 50) * (Math.random() < 0.5 ? -1 : 1) +
-      node.position("y"), // Posición Y aleatoria
-  };
-
   node
     .animation({
-      position: targetPosition,
-      duration: duration,
+      position: {
+        x:
+          Math.floor(Math.random() * 50) * (Math.random() < 0.5 ? -1 : 1) +
+          node.position("x"), // Posición X aleatoria
+        y:
+          Math.floor(Math.random() * 50) * (Math.random() < 0.5 ? -1 : 1) +
+          node.position("y"), // Posición Y aleatoria
+      },
+      duration: 10000,
       //easing: 'ease-in-out', // Efecto de aceleración/desaceleración
     })
     .play()
