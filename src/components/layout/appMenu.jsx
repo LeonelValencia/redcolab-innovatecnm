@@ -27,7 +27,7 @@ const pages = [
   },
   {
     label: "RoadMaps",
-    url: "/roadmaps"
+    url: "/roadmaps",
   },
 ];
 const USER_SETTINGS = [
@@ -85,7 +85,6 @@ export default function AppMenu() {
           >
             REDCOLAB
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -116,10 +115,13 @@ export default function AppMenu() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={()=>{
-                  handleCloseNavMenu()
-                  navigate(page.url)
-                }}>
+                <MenuItem
+                  key={page}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    navigate(page.url);
+                  }}
+                >
                   <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
@@ -144,17 +146,25 @@ export default function AppMenu() {
           >
             REDCOLAB
           </Typography>
-          {USER.isAuth && (
-            <UserMenu USER={USER} navigate={navigate} />
-          )}
+          <Tooltip title="registro">
+            <Button
+              onClick={() => {
+                navigate("/signUp");
+              }}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              ¡Pre-Registro!
+            </Button>
+          </Tooltip>
+          {USER.isAuth && <UserMenu USER={USER} navigate={navigate} />}
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={()=>{
-                  handleCloseNavMenu()
-                  navigate(page.url)
+                onClick={() => {
+                  handleCloseNavMenu();
+                  navigate(page.url);
                 }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
@@ -166,7 +176,7 @@ export default function AppMenu() {
             <UserMenu USER={USER} navigate={navigate} />
           ) : (
             <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
-              <Tooltip title="Login">
+              <Tooltip title="registro">
                 <Button
                   onClick={() => {
                     navigate("/signUp");
