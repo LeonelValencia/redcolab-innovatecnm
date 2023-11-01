@@ -9,9 +9,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import md5 from "md5"
+// import md5 from "md5"
 import { useUserContext } from './authProvider'
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom"; //, useNavigate
 
 
 function Copyright(props) {
@@ -39,11 +39,11 @@ export default function SignUp() {
   const [isError, setIsError] = useState(false)
 
   const isValidEmail = email.length > 0 ? /\S+@\S+\.\S+/.test(email) : true;
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const USER = useUserContext()
-  const showSnackbar = (severity, message) => {
+  /* const showSnackbar = (severity, message) => {
     setSnackType({ severity: severity, message: message, open: true });
-  };
+  }; */
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
